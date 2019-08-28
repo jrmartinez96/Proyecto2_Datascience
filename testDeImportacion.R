@@ -26,6 +26,7 @@ View(honduras)
 View(guatemala)
 
 names(el_salvador)[names(el_salvador) == "conca"] <- "CONCA"
+guatemala$`Año Mes` <- gsub("210811","201811",guatemala$`Año Mes`)
 
 ventas.centroamerica<-rbind(guatemala,honduras,nicaragua,el_salvador)
 colnames(ventas.centroamerica)
@@ -35,4 +36,11 @@ View(ventas.centroamerica)
 save(ventas.centroamerica, file = "ventas_centroamerica.RData")
 
 #-----------------------------------------------------------------
-View(ventas.centroamerica)
+# TABLA DE FRECUENCIA POR MES POR ANO
+
+h1<-table(ventas.centroamerica$`Año Mes`)
+h1[1:12]
+meses<-c("Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago","Sept", "Oct", "Nov","Dic")
+plot(h1[1:12])
+?plot
+
