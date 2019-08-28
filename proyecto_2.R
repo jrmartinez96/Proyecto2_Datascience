@@ -44,7 +44,7 @@ ventas.centroamerica$Contingencia <- gsub("farma","Farma",ventas.centroamerica$C
 #Pagina | pagina derecha Pagina derecha, Pagina izquierda pagina izquierda
 ventas.centroamerica$Pagina <- gsub("Pagina derecha","pagina derecha", ventas.centroamerica$Pagina)
 ventas.centroamerica$Pagina <- gsub("Pagina izquierda","pagina izquierda", ventas.centroamerica$Pagina)
-
+  
 #Tipo Precio | intruduccion Introduccion, precio normal Precio Normal
 ventas.centroamerica$`Tipo Precio` <- gsub("Introduccion","introduccion",ventas.centroamerica$`Tipo Precio`)
 ventas.centroamerica$`Tipo Precio` <- gsub("Precio Normal","precio normal",ventas.centroamerica$`Tipo Precio`)
