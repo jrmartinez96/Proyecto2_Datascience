@@ -158,7 +158,7 @@ vcnum <- ventas.centroamerica[,num]
 # variables categóricas de ventas.centroamericas
 vccat <- ventas.centroamerica[,cat] 
 # Realizando la matriz de correlación y su gráfica
-matcorrelacion <- cor(vcnum[,-1],use = "pairwise.complete.obs")
+matcorrelacion <- cor(vcnum,use = "pairwise.complete.obs")
 round(matcorrelacion, digits = 6)
 corrplot(matcorrelacion, method="shade", addCoef.col = "black", shade.col=NA, tl.col="black", tl.cex=0.6, tl.srt=45)
 
