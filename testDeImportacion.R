@@ -30,8 +30,8 @@ ventas.centroamerica<-rbind(guatemala,honduras,nicaragua,el_salvador)
 #Cambio de nombres a columnas
 names(ventas.centroamerica)[names(ventas.centroamerica) == "Pagina..7"] <- "Pagina_cat"
 names(ventas.centroamerica)[names(ventas.centroamerica) == "Pagina..22"] <- "Pagina"
-names(ventas.centroamerica)[names(ventas.centroamerica) == "%..24"] <- "Porcentaje"
-names(ventas.centroamerica)[names(ventas.centroamerica) == "%..26"] <- "Porcentaje"
+names(ventas.centroamerica)[names(ventas.centroamerica) == "%..24"] <- "Porcentaje precio"
+names(ventas.centroamerica)[names(ventas.centroamerica) == "%..26"] <- "Porcentaje comision"
 
 #Arreglo nivel 210811 en categoría Año mes
 ventas.centroamerica$`Año Mes` <- gsub("210811","201811",ventas.centroamerica$`Año Mes`)
@@ -149,4 +149,17 @@ freq(ventas.centroamerica$`Treboles extra`)
 
 #Histograma de categoria pronostico
 hist(ventas.centroamerica$Pronostico, breaks=10, col="blue", xlab="Petal Length", main="Colored histogram")
+
+# separación de variables numéricas de las categóricas
+num <- unlist(lapply(ventas.centroamerica, is.numeric))
+cat <- unlist(lapply(ventas.centroamerica, is.factor))
+# variables numéricas de ventas.centroamerica
+vcnum <- ventas.centroamerica[,num] 
+# variables categóricas de ventas.centroamericas
+vccat <- ventas.centroamerica[,cat] 
+# Realizando la matriz de correlación y su gráfica
+matcorrelacion <- cor(vcnum[,-1],use = "pairwise.complete.obs")
+round(matcorrelacion, digits = 6)
+corrplot(matcorrelacion, method="shade", addCoef.col = "black", shade.col=NA, tl.col="black", tl.cex=0.6, tl.srt=45)
+
 
