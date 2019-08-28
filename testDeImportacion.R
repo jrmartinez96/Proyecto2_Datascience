@@ -163,4 +163,10 @@ matcorrelacion <- cor(vcnum,use = "pairwise.complete.obs")
 round(matcorrelacion, digits = 6)
 corrplot(matcorrelacion, method="shade", addCoef.col = "black", shade.col=NA, tl.col="black", tl.cex=0.6, tl.srt=45)
 
+# Graficos exploratorios
+names(vcnum)[12] <- "Porcentaje2"
+vcnum <- vcnum[complete.cases(vcnum),]
+compPrinc<-prcomp(vcnum, scale = TRUE)
+summary(compPrinc)
+fviz_pca_var(compPrinc, col.var = "cos2",gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"), repel = TRUE)
 
