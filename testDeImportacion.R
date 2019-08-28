@@ -17,6 +17,8 @@ library("readxl")
 library("dplyr")
 library(frequency)
 library(corrplot)
+library(NbClust)
+library(fpc)
 
 # Unión de todos los datos individuales para lograr un conjunto centroamericano
 el_salvador <- read_excel("el_salvador.xlsx", range = "A2:AE6370")
@@ -182,3 +184,13 @@ ps<-c("FAMILY", "CLEAN HOUSE", "COLLECTION EXCLUSUVAS FEM", "COLLECTION EXCLUSUV
       "SCENTIA NATURALS", "NATURAL PERFECTION", "D'NINOS", "PROMOCIONAL", "ORO LIQUIDO", "TOP SECRET")
 barplot(head(h1, n=10), names.arg = NA, main = "LINEAS MAS PEDIDAS")
 axis(1, at=xx, labels=ps, tick=FALSE, las=2, line=-3, cex.axis=0.5)
+
+
+
+### CLUSTERING ###
+
+#Paquete para saber el mejor n?mero de clusters
+nb <- NbClust(vcnum, distance = "euclidean", min.nc = 2,max.nc = 10, method = "complete", index ="all")
+
+km<-kmeans(iris[,1:4],3)
+plotcluster(iris[,1:4],km$cluster) #grafica la ubicación de los clusters
