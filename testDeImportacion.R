@@ -13,6 +13,7 @@
 #Programa para juntar todos los xls en una tabla y exportar un RDATA
 library("readxl")
 library("dplyr")
+library(frequency)
 
 # Unión de todos los datos individuales para lograr un conjunto centroamericano
 el_salvador <- read_excel("el_salvador.xlsx", range = "A2:AE6370")
@@ -118,10 +119,34 @@ ps
 axis(1, at=xx, labels=ps, tick=FALSE, las=2, line=-11, cex.axis=0.5)
 ?barplot
 
-
 # CODIGO CATEGORIA
 categorias<-table(ventas.centroamerica$Categoria)
 categorias
 h1<-categorias[order(-categorias)]
 h1
 barplot(h1)
+
+#Tablas de frecuencia de todas las variables
+freq(ventas.centroamerica$`Año Mes`)
+freq(ventas.centroamerica$Producto)
+freq(ventas.centroamerica$CONCA)
+freq(ventas.centroamerica$`Codigo Catalogo`)
+freq(ventas.centroamerica$Descripcion)
+freq(ventas.centroamerica$Categoria)
+freq(ventas.centroamerica$Pagina_cat)
+freq(ventas.centroamerica$Linea)
+freq(ventas.centroamerica$Observaciones)
+freq(ventas.centroamerica$`Canal de Venta`)
+freq(ventas.centroamerica$Contingencia)
+freq(ventas.centroamerica$Pagina)
+freq(ventas.centroamerica$`Tipo Precio`)
+freq(ventas.centroamerica$`Tipo Comision`)
+freq(ventas.centroamerica$`Atributo Neto`)
+freq(ventas.centroamerica$`Energy Chart`)
+freq(ventas.centroamerica$Promociones)
+freq(ventas.centroamerica$`Recursos Especiales`)
+freq(ventas.centroamerica$`Treboles extra`)
+
+#Histograma de categoria pronostico
+hist(ventas.centroamerica$Pronostico, breaks=10, col="blue", xlab="Petal Length", main="Colored histogram")
+
