@@ -14,6 +14,7 @@
 library("readxl")
 library("dplyr")
 library(frequency)
+library(corrplot)
 
 # Unión de todos los datos individuales para lograr un conjunto centroamericano
 el_salvador <- read_excel("el_salvador.xlsx", range = "A2:AE6370")
