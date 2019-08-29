@@ -19,6 +19,9 @@ library(frequency)
 library(corrplot)
 library(NbClust)
 library(fpc)
+library(cluster)
+library(fpc) 
+library(factoextra)
 
 # Unión de todos los datos individuales para lograr un conjunto centroamericano
 el_salvador <- read_excel("el_salvador.xlsx", range = "A2:AE6370")
@@ -186,11 +189,27 @@ barplot(head(h1, n=10), names.arg = NA, main = "LINEAS MAS PEDIDAS")
 axis(1, at=xx, labels=ps, tick=FALSE, las=2, line=-3, cex.axis=0.5)
 
 
-
 ### CLUSTERING ###
+
+# Método de ward para determinar número adecuado de clusters con K-means
+wss <- (nrow(vcnum)-1)*sum(apply(vcnum,2,var))
+
+for (i in 2:10) 
+  wss[i] <- sum(kmeans(vcnum, centers=i)$withinss)
+
+plot(1:10, wss, type="b", xlab="Number of Clusters",  ylab="Within groups sum of squares")
 
 #Paquete para saber el mejor n?mero de clusters
 nb <- NbClust(vcnum, distance = "euclidean", min.nc = 2,max.nc = 10, method = "complete", index ="all")
 
-km<-kmeans(iris[,1:4],3)
-plotcluster(iris[,1:4],km$cluster) #grafica la ubicación de los clusters
+# Método K-means para crear los clusters 
+km<-kmeans(vcnum,4)
+vcnum$grupo<-km$cluster
+# gráficos que muestran la ubicación de cada cluster
+plotcluster(vcnum,km$cluster)
+fviz_cluster(km, data = vcnum,geom = "point", ellipse.type = "norm")
+# Calculo de la silueta para K-means
+silkm<-silhouette(km$cluster,dist(vcnum))
+mean(silkm[,3])
+vcnum$grupo<-NULL
+
