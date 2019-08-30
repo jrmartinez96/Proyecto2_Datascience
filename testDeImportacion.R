@@ -16,6 +16,9 @@ install.packages("frequency")
 library("readxl")
 library("dplyr")
 library(frequency)
+library(rela)
+library(psych)
+library(FactoMineR)
 library(corrplot)
 library(NbClust)
 library(fpc)
@@ -171,11 +174,30 @@ round(matcorrelacion, digits = 6)
 corrplot(matcorrelacion, method="shade", addCoef.col = "black", shade.col=NA, tl.col="black", tl.cex=0.6, tl.srt=45)
 
 # Graficos exploratorios
+
+### PCA ###
+
 names(vcnum)[12] <- "Porcentaje2"
 vcnum <- vcnum[complete.cases(vcnum),]
+# Analizar si se puede usar el análisis factorial para formar combinaciones lineales de las variables
+pafvcnum<-paf(as.matrix(vcnum))
+pafvcnum$KMO 
+pafvcnum$Bartlett 
+summary(pafvcnum)
+# Nivel de significación de la prueba
+cortest.bartlett(vcnum)
+
+# Se normalizan los datos para hacer el PCA
 compPrinc<-prcomp(vcnum, scale = TRUE)
 summary(compPrinc)
 fviz_pca_var(compPrinc, col.var = "cos2",gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"), repel = TRUE)
+
+# Se hace el PCA
+vcnumPCA<-PCA(vcnum,ncp=ncol(vcnum), scale.unit = T)
+summary(vcnumPCA)
+# Se obtiene la representación de cada variable en cada componente
+var<-get_pca_var(vcnumPCA)
+corrplot(var$cos2, is.corr = F)
 
 h1<-ventas.centroamerica$`Canal de Venta`
 plot(h1, main = "CANAL DE VENTA EN C.A.")
