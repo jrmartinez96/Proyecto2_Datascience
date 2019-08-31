@@ -14,6 +14,15 @@
 library("readxl")
 library("dplyr")
 library(frequency)
+library(rela)	
+library(psych)	
+library(FactoMineR)	
+library(corrplot)	
+library(NbClust)	
+library(fpc)	
+library(cluster)	
+library(fpc) 	
+library(factoextra)
 
 # Unión de todos los datos individuales para lograr un conjunto centroamericano
 el_salvador <- read_excel("el_salvador.xlsx", range = "A2:AE6370")
@@ -167,7 +176,7 @@ matcorrelacion <- cor(vcnum,use = "pairwise.complete.obs")
 round(matcorrelacion, digits = 6)
 corrplot(matcorrelacion, method="shade", addCoef.col = "black", shade.col=NA, tl.col="black", tl.cex=0.6, tl.srt=45)
 
-# ------------------------- Clusterin ---------------------------------
+# ------------------------- Clustering ---------------------------------
 
 # Método de ward para determinar número adecuado de clusters con K-means
 wss <- (nrow(vcnum)-1)*sum(apply(vcnum,2,var))
