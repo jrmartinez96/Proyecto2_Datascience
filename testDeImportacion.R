@@ -226,7 +226,12 @@ plotcluster(vcnum,fcm$cluster)
 
 # ---------------------------- Reglas de asociación (esto falta) ------------------------
 
-
+# El m?nimo nivel de soporte y confianza aceptados
+#Debido a la gran cantidad de datos, se escogen únicamente reglas con 0.9 de soportey confianza, así como se limitan parametros para el tiempo de búsqueda (maxtime y maxlen)
+reglas<-apriori(vccat, parameter = list(support = 0.30,
+                                       confidence = 0.60,
+                                       minlen = 2,
+                                       target = "rules"))
 
 # ---------------------------- Análisis PCA ---------------------
 
