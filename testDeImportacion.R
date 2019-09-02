@@ -21,8 +21,11 @@ library(corrplot)
 library(NbClust)	
 library(fpc)	
 library(cluster)	
-library(fpc) 	
+library(fpc)
 library(factoextra)
+library(e1071)#para cmeans
+# REGLAS DE ASOCIACI?N
+library(arules)
 
 # Unión de todos los datos individuales para lograr un conjunto centroamericano
 el_salvador <- read_excel("el_salvador.xlsx", range = "A2:AE6370")
@@ -43,7 +46,7 @@ ventas.centroamerica<-rbind(guatemala,honduras,nicaragua,el_salvador)
 names(ventas.centroamerica)[names(ventas.centroamerica) == "Pagina..7"] <- "Pagina_cat"
 names(ventas.centroamerica)[names(ventas.centroamerica) == "Pagina..22"] <- "Pagina"
 names(ventas.centroamerica)[names(ventas.centroamerica) == "%..24"] <- "Porcentaje"
-names(ventas.centroamerica)[names(ventas.centroamerica) == "%..26"] <- "Porcentaje"
+names(ventas.centroamerica)[names(ventas.centroamerica) == "%..26"] <- "Porcentaje2"
 
 #Arreglo nivel 210811 en categoría Año mes
 ventas.centroamerica$`Año Mes` <- gsub("210811","201811",ventas.centroamerica$`Año Mes`)
@@ -143,6 +146,20 @@ categorias<-table(ventas.centroamerica$Categoria)
 cat_ordenadas<-categorias[order(-categorias)]
 barplot(cat_ordenadas)
 
+#Grafica de canales de venta
+h1<-ventas.centroamerica$`Canal de Venta`
+plot(h1, main = "CANAL DE VENTA EN C.A.")
+
+#Grafica de lineas mas pedidas
+lineas<-table(ventas.centroamerica$Linea)
+h1<-lineas[order(-lineas)]
+head(h1,n=10)
+ps<-c("FAMILY", "CLEAN HOUSE", "COLLECTION EXCLUSUVAS FEM", "COLLECTION EXCLUSUVAS MEN",
+      "SCENTIA NATURALS", "NATURAL PERFECTION", "D'NINOS", "PROMOCIONAL", "ORO LIQUIDO", "TOP SECRET")
+barplot(head(h1, n=10), names.arg = NA, main = "LINEAS MAS PEDIDAS")
+axis(1, at=xx, labels=ps, tick=FALSE, las=2, line=-3, cex.axis=0.5)
+
+
 #Tablas de frecuencia de todas las variables
 freq(ventas.centroamerica$`Año Mes`)
 freq(ventas.centroamerica$Producto)
@@ -164,13 +181,14 @@ freq(ventas.centroamerica$Promociones)
 freq(ventas.centroamerica$`Recursos Especiales`)
 freq(ventas.centroamerica$`Treboles extra`)
 
+
 # separación de variables numéricas de las categóricas
 num <- unlist(lapply(ventas.centroamerica, is.numeric))
 cat <- unlist(lapply(ventas.centroamerica, is.factor))
 # variables numéricas de ventas.centroamerica
-vcnum <- ventas.centroamerica[,num] 
+vcnum <- ventas.centroamerica[,num]
 # variables categóricas de ventas.centroamericas
-vccat <- ventas.centroamerica[,cat] 
+vccat <- ventas.centroamerica[,cat]
 # Realizando la matriz de correlación y su gráfica
 matcorrelacion <- cor(vcnum,use = "pairwise.complete.obs")
 round(matcorrelacion, digits = 6)
@@ -186,12 +204,9 @@ for (i in 2:10)
 
 plot(1:10, wss, type="b", xlab="Number of Clusters",  ylab="Within groups sum of squares")
 
-#Paquete para saber el mejor n?mero de clusters
-nb <- NbClust(vcnum, distance = "euclidean", min.nc = 2,max.nc = 10, method = "complete", index ="all")
-
 # Método K-means para crear los clusters 
 km<-kmeans(vcnum,4)
-vcnum$grupo<-km$cluster
+vcnum$grupo_kmedias<-km$cluster
 # gráficos que muestran la ubicación de cada cluster
 plotcluster(vcnum,km$cluster)
 fviz_cluster(km, data = vcnum,geom = "point", ellipse.type = "norm")
@@ -200,11 +215,21 @@ silkm<-silhouette(km$cluster,dist(vcnum))
 mean(silkm[,3])
 vcnum$grupo<-NULL
 
+#--- Con fuzzy c-means
+
+#Fuzzy C-Means
+fcm<-cmeans(vcnum,3)
+vcnum$grupo_fuzzy<-fcm$cluster
+silkm<-silhouette(fcm$cluster,dist(vcnum))
+mean(silkm[,3])
+plotcluster(vcnum,fcm$cluster)
+
 # ---------------------------- Reglas de asociación (esto falta) ------------------------
+
+
 
 # ---------------------------- Análisis PCA ---------------------
 
-names(vcnum)[12] <- "Porcentaje2"
 vcnum <- vcnum[complete.cases(vcnum),]
 # Analizar si se puede usar el análisis factorial para formar combinaciones lineales de las variables
 pafvcnum<-paf(as.matrix(vcnum))
@@ -226,14 +251,4 @@ summary(vcnumPCA)
 var<-get_pca_var(vcnumPCA)
 corrplot(var$cos2, is.corr = F)
 
-h1<-ventas.centroamerica$`Canal de Venta`
-plot(h1, main = "CANAL DE VENTA EN C.A.")
-
-lineas<-table(ventas.centroamerica$Linea)
-h1<-lineas[order(-lineas)]
-head(h1,n=10)
-ps<-c("FAMILY", "CLEAN HOUSE", "COLLECTION EXCLUSUVAS FEM", "COLLECTION EXCLUSUVAS MEN",
-      "SCENTIA NATURALS", "NATURAL PERFECTION", "D'NINOS", "PROMOCIONAL", "ORO LIQUIDO", "TOP SECRET")
-barplot(head(h1, n=10), names.arg = NA, main = "LINEAS MAS PEDIDAS")
-axis(1, at=xx, labels=ps, tick=FALSE, las=2, line=-3, cex.axis=0.5)
 
