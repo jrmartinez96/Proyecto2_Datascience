@@ -43,8 +43,8 @@ ventas.centroamerica<-rbind(guatemala,honduras,nicaragua,el_salvador)
 # ------------------------ Proceso de limpieza de los datos ---------------------------
 
 #Cambio de nombres a columnas
-names(ventas.centroamerica)[names(ventas.centroamerica) == "Pagina..7"] <- "Pagina_cat"
-names(ventas.centroamerica)[names(ventas.centroamerica) == "Pagina..22"] <- "Pagina"
+names(ventas.centroamerica)[names(ventas.centroamerica) == "Pagina...7"] <- "Pagina_cat"
+names(ventas.centroamerica)[names(ventas.centroamerica) == "Pagina...22"] <- "Pagina"
 names(ventas.centroamerica)[names(ventas.centroamerica) == "%..24"] <- "Porcentaje"
 names(ventas.centroamerica)[names(ventas.centroamerica) == "%..26"] <- "Porcentaje2"
 
@@ -187,6 +187,7 @@ num <- unlist(lapply(ventas.centroamerica, is.numeric))
 cat <- unlist(lapply(ventas.centroamerica, is.factor))
 # variables numéricas de ventas.centroamerica
 vcnum <- ventas.centroamerica[,num]
+vcnum <- vcnum[complete.cases(vcnum),]
 # variables categóricas de ventas.centroamericas
 vccat <- ventas.centroamerica[,cat]
 # Realizando la matriz de correlación y su gráfica
@@ -233,9 +234,12 @@ reglas<-apriori(vccat, parameter = list(support = 0.30,
                                        minlen = 2,
                                        target = "rules"))
 
+inspect(reglas)
+
+
 # ---------------------------- Análisis PCA ---------------------
 
-vcnum <- vcnum[complete.cases(vcnum),]
+
 # Analizar si se puede usar el análisis factorial para formar combinaciones lineales de las variables
 pafvcnum<-paf(as.matrix(vcnum))
 pafvcnum$KMO 
