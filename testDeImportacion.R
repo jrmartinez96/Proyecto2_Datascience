@@ -43,8 +43,8 @@ ventas.centroamerica<-rbind(guatemala,honduras,nicaragua,el_salvador)
 # ------------------------ Proceso de limpieza de los datos ---------------------------
 
 #Cambio de nombres a columnas
-names(ventas.centroamerica)[names(ventas.centroamerica) == "Pagina..7"] <- "Pagina_cat"
-names(ventas.centroamerica)[names(ventas.centroamerica) == "Pagina..22"] <- "Pagina"
+names(ventas.centroamerica)[names(ventas.centroamerica) == "Pagina...7"] <- "Pagina_cat"
+names(ventas.centroamerica)[names(ventas.centroamerica) == "Pagina...22"] <- "Pagina"
 names(ventas.centroamerica)[names(ventas.centroamerica) == "%..24"] <- "Porcentaje"
 names(ventas.centroamerica)[names(ventas.centroamerica) == "%..26"] <- "Porcentaje2"
 
@@ -187,6 +187,7 @@ num <- unlist(lapply(ventas.centroamerica, is.numeric))
 cat <- unlist(lapply(ventas.centroamerica, is.factor))
 # variables numéricas de ventas.centroamerica
 vcnum <- ventas.centroamerica[,num]
+vcnum <- vcnum[complete.cases(vcnum),]
 # variables categóricas de ventas.centroamericas
 vccat <- ventas.centroamerica[,cat]
 # Realizando la matriz de correlación y su gráfica
@@ -226,6 +227,14 @@ plotcluster(vcnum,fcm$cluster)
 
 # ---------------------------- Reglas de asociación (esto falta) ------------------------
 
+# El m?nimo nivel de soporte y confianza aceptados
+#Debido a la gran cantidad de datos, se escogen únicamente reglas con 0.9 de soportey confianza, así como se limitan parametros para el tiempo de búsqueda (maxtime y maxlen)
+reglas<-apriori(vccat, parameter = list(support = 0.30,
+                                       confidence = 0.60,
+                                       minlen = 2,
+                                       target = "rules"))
+
+inspect(reglas)
 
 
 # ---------------------------- Análisis PCA ---------------------
