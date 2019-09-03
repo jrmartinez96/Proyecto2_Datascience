@@ -43,8 +43,8 @@ ventas.centroamerica<-rbind(guatemala,honduras,nicaragua,el_salvador)
 # ------------------------ Proceso de limpieza de los datos ---------------------------
 
 #Cambio de nombres a columnas
-names(ventas.centroamerica)[names(ventas.centroamerica) == "Pagina...7"] <- "Pagina_cat"
-names(ventas.centroamerica)[names(ventas.centroamerica) == "Pagina...22"] <- "Pagina"
+names(ventas.centroamerica)[names(ventas.centroamerica) == "Pagina..7"] <- "Pagina_cat"
+names(ventas.centroamerica)[names(ventas.centroamerica) == "Pagina..22"] <- "Pagina"
 names(ventas.centroamerica)[names(ventas.centroamerica) == "%..24"] <- "Porcentaje"
 names(ventas.centroamerica)[names(ventas.centroamerica) == "%..26"] <- "Porcentaje2"
 
@@ -87,7 +87,7 @@ ventas.centroamerica$`Treboles extra` <- gsub("SI","si",ventas.centroamerica$`Tr
 col_names <- c("Año Mes","Producto","Codigo Catalogo","CONCA","Tipo Comision","Pagina_cat","Descripcion","Categoria","Linea","Observaciones","Canal de Venta","Contingencia","Pagina","Tipo Precio","Atributo Neto","Energy Chart","Promociones","Recursos Especiales","Treboles extra")
 ventas.centroamerica$Costo <- as.numeric(ventas.centroamerica$Costo)
 ventas.centroamerica[col_names] <- lapply(ventas.centroamerica[col_names] , factor)
-
+View(ventas.centroamerica)
 #Codigo utilizado para hacer un resumen del dataset con todos los niveles de los factores para corregir uno por uno
 # sink("resumen_datos.png")
 # print(summary(ventas.centroamerica, maxsum = max(lengths(lapply(ventas.centroamerica, unique)))))
@@ -239,14 +239,111 @@ inspect(reglas)
 
 # ---------------------------- Análisis PCA ---------------------
 
-vcnum <- vcnum[complete.cases(vcnum),]
-View(vcnum)
+
+str(ventas.centroamerica)
+str(vcnum)
+PCA<-prcomp(vcnum, scale. = TRUE)
+
+summary(PCA)
 View(ventas.centroamerica)
-max(ventas.centroamerica$`Unidades Vendidas`)
 
-UnidadMasPedida<-ventas.centroamerica$Descripcion[ventas.centroamerica$`Pedido Real` == 14527]
-View(UnidadMasPedida)
+datosPCA<-ventas.centroamerica[c(1,2,3,4,7, 9:18,24,26 )]
+View(datosPCA)
 
+ventas2018<-datosPCA[grep("2018", datosPCA$`Año Mes`),]
+ventas2019<-datosPCA[grep("2019", datosPCA$`Año Mes`),]
+
+View(ventas2018)
+View(ventas2019)
+
+ventas2018$AnioNuevo<- 2018
+ventas2019$AnioNuevo<- 2019
+
+#####
+
+ene<-ventas2018[grep("201801", ventas2018$`Año Mes`),]
+ene$MesNuevo <- 1
+feb<-ventas2018[grep("201802", ventas2018$`Año Mes`),]
+feb$MesNuevo <- 2
+mar<-ventas2018[grep("201803", ventas2018$`Año Mes`),]
+mar$MesNuevo <- 3
+abr<-ventas2018[grep("201804", ventas2018$`Año Mes`),]
+abr$MesNuevo <- 4
+may<-ventas2018[grep("201805", ventas2018$`Año Mes`),]
+may$MesNuevo <- 5
+jun<-ventas2018[grep("201806", ventas2018$`Año Mes`),]
+jun$MesNuevo <- 6
+jul<-ventas2018[grep("201807", ventas2018$`Año Mes`),]
+jul$MesNuevo <- 7
+ago<-ventas2018[grep("201808", ventas2018$`Año Mes`),]
+ago$MesNuevo <- 8
+sep<-ventas2018[grep("201809", ventas2018$`Año Mes`),]
+sep$MesNuevo <- 9
+oct<-ventas2018[grep("201810", ventas2018$`Año Mes`),]
+oct$MesNuevo <- 10
+nov<-ventas2018[grep("201811", ventas2018$`Año Mes`),]
+nov$MesNuevo <- 11
+dic<-ventas2018[grep("201812", ventas2018$`Año Mes`),]
+dic$MesNuevo <- 12
+
+ventas2018<-rbind(ene,feb,mar,abr,may,jun,jul,ago,sep,oct,nov,dic)
+
+ene<-ventas2019[grep("201901", ventas2019$`Año Mes`),]
+ene$MesNuevo <- 1
+feb<-ventas2019[grep("201902", ventas2019$`Año Mes`),]
+feb$MesNuevo <- 2
+mar<-ventas2019[grep("201903", ventas2019$`Año Mes`),]
+mar$MesNuevo <- 3
+abr<-ventas2019[grep("201904", ventas2019$`Año Mes`),]
+abr$MesNuevo <- 4
+may<-ventas2019[grep("201905", ventas2019$`Año Mes`),]
+may$MesNuevo <- 5
+jun<-ventas2019[grep("201906", ventas2019$`Año Mes`),]
+jun$MesNuevo <- 6
+jul<-ventas2019[grep("201907", ventas2019$`Año Mes`),]
+jul$MesNuevo <- 7
+
+ventas2019<-rbind(ene,feb,mar,abr,may,jun,jul)
+
+View(ventas2018)
+View(ventas2019)
+
+ventas2018<-ventas2018[c(2:19)]
+ventas2019<-ventas2019[c(2:19)]
+
+View(ventas2018)
+View(ventas2019)
+
+100*mean(is.na(ventas2018))
+100*mean(is.na(ventas2019))
+
+ventas2018SinNA<-na.omit(ventas2018)
+ventas2019SinNA<-na.omit(ventas2019)
+View(ventas2018SinNA)
+View(ventas2018)
+
+
+datosPCA<-rbind(ventas2018SinNA,ventas2019SinNA)
+datosPCA2<-rbind(ventas2018,ventas2019)
+
+View(datosPCA)
+View(datosPCA2)
+
+datosPCA$Producto <- as.numeric(as.character(datosPCA$Producto))
+datosPCA$CONCA <- as.numeric(as.character(datosPCA$CONCA))
+datosPCA$`Codigo Catalogo` <- as.numeric(as.character(datosPCA$`Codigo Catalogo`))
+datosPCA$Pagina_cat <- as.numeric(as.character(datosPCA$Pagina_cat))
+
+datosPCA2$Producto <- as.numeric(as.character(datosPCA2$Producto))
+datosPCA2$CONCA <- as.numeric(as.character(datosPCA2$CONCA))
+datosPCA2$`Codigo Catalogo` <- as.numeric(as.character(datosPCA2$`Codigo Catalogo`))
+datosPCA2$Pagina_cat <- as.numeric(as.character(datosPCA2$Pagina_cat))
+
+
+PCA<-prcomp(datosPCA)
+summary(PCA)
+PCA2<-prcomp(datosPCA2)
+summary(PCA2)
 
 # Analizar si se puede usar el análisis factorial para formar combinaciones lineales de las variables
 as.factor(ventas.centroamerica$`Pedido Real`)
