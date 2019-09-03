@@ -231,7 +231,18 @@ plotcluster(vcnum,fcm$cluster)
 # ---------------------------- Análisis PCA ---------------------
 
 vcnum <- vcnum[complete.cases(vcnum),]
+View(vcnum)
+View(ventas.centroamerica)
+max(ventas.centroamerica$`Unidades Vendidas`)
+
+UnidadMasPedida<-ventas.centroamerica$Descripcion[ventas.centroamerica$`Pedido Real` == 14527]
+View(UnidadMasPedida)
+
+
 # Analizar si se puede usar el análisis factorial para formar combinaciones lineales de las variables
+as.factor(ventas.centroamerica$`Pedido Real`)
+num<-as.numeric(num)
+paf(num)
 pafvcnum<-paf(as.matrix(vcnum))
 pafvcnum$KMO 
 pafvcnum$Bartlett 
