@@ -186,8 +186,12 @@ freq(ventas.centroamerica$`Treboles extra`)
 num <- unlist(lapply(ventas.centroamerica, is.numeric))
 cat <- unlist(lapply(ventas.centroamerica, is.factor))
 # variables numéricas de ventas.centroamerica
+ventas.centroamerica$Producto<-as.numeric(as.character(ventas.centroamerica$Producto))
+ventas.centroamerica$Pagina_cat<-as.numeric(as.character(ventas.centroamerica$Pagina_cat))
+ventas.centroamerica$`Codigo Catalogo`<-as.numeric(as.character(ventas.centroamerica$`Codigo Catalogo`))
 vcnum <- ventas.centroamerica[,num]
-vcnum <- vcnum[complete.cases(vcnum),]
+
+View(vcnum)
 # variables categóricas de ventas.centroamericas
 vccat <- ventas.centroamerica[,cat]
 # Realizando la matriz de correlación y su gráfica
@@ -344,28 +348,32 @@ PCA<-prcomp(datosPCA)
 summary(PCA)
 PCA2<-prcomp(datosPCA2)
 summary(PCA2)
-
+############################################ PCA ############################################ 
+View(vcnum)
+# names(vcnum)[12] <- "Porcentaje2"
+# vcnum <- vcnum[complete.cases(vcnum),]
 # Analizar si se puede usar el análisis factorial para formar combinaciones lineales de las variables
-as.factor(ventas.centroamerica$`Pedido Real`)
-num<-as.numeric(num)
-paf(num)
+vcnum$Pagina<-NULL
 pafvcnum<-paf(as.matrix(vcnum))
 pafvcnum$KMO 
 pafvcnum$Bartlett 
 summary(pafvcnum)
+pafvcnum$Correlation
 # Nivel de significación de la prueba
 cortest.bartlett(vcnum)
 
 # Se normalizan los datos para hacer el PCA
-compPrinc<-prcomp(vcnum, scale = TRUE)
+compPrinc<-prcomp(na.omit(vcnum), scale = TRUE)
 summary(compPrinc)
 fviz_pca_var(compPrinc, col.var = "cos2",gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"), repel = TRUE)
 
 # Se hace el PCA
-vcnumPCA<-PCA(vcnum,ncp=ncol(vcnum), scale.unit = T)
+vcnumPCA<-PCA(vcnum,ncp=10, scale.unit = T)
+names(vcnum)[1:10]
 summary(vcnumPCA)
 # Se obtiene la representación de cada variable en cada componente
 var<-get_pca_var(vcnumPCA)
 corrplot(var$cos2, is.corr = F)
+
 
 
