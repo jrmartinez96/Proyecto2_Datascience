@@ -312,42 +312,6 @@ ventas2019<-rbind(ene,feb,mar,abr,may,jun,jul)
 View(ventas2018)
 View(ventas2019)
 
-ventas2018<-ventas2018[c(2:19)]
-ventas2019<-ventas2019[c(2:19)]
-
-View(ventas2018)
-View(ventas2019)
-
-100*mean(is.na(ventas2018))
-100*mean(is.na(ventas2019))
-
-ventas2018SinNA<-na.omit(ventas2018)
-ventas2019SinNA<-na.omit(ventas2019)
-View(ventas2018SinNA)
-View(ventas2018)
-
-
-datosPCA<-rbind(ventas2018SinNA,ventas2019SinNA)
-datosPCA2<-rbind(ventas2018,ventas2019)
-
-View(datosPCA)
-View(datosPCA2)
-
-datosPCA$Producto <- as.numeric(as.character(datosPCA$Producto))
-datosPCA$CONCA <- as.numeric(as.character(datosPCA$CONCA))
-datosPCA$`Codigo Catalogo` <- as.numeric(as.character(datosPCA$`Codigo Catalogo`))
-datosPCA$Pagina_cat <- as.numeric(as.character(datosPCA$Pagina_cat))
-
-datosPCA2$Producto <- as.numeric(as.character(datosPCA2$Producto))
-datosPCA2$CONCA <- as.numeric(as.character(datosPCA2$CONCA))
-datosPCA2$`Codigo Catalogo` <- as.numeric(as.character(datosPCA2$`Codigo Catalogo`))
-datosPCA2$Pagina_cat <- as.numeric(as.character(datosPCA2$Pagina_cat))
-
-
-PCA<-prcomp(datosPCA)
-summary(PCA)
-PCA2<-prcomp(datosPCA2)
-summary(PCA2)
 ############################################ PCA ############################################ 
 View(vcnum)
 # names(vcnum)[12] <- "Porcentaje2"
