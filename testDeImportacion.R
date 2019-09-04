@@ -33,6 +33,24 @@ nicaragua <- read_excel("nicaragua.xlsx", range = "A2:AE6374")
 honduras <- read_excel("honduras.xlsx", range = "A2:AE6685")
 guatemala <- read_excel("guatemala.xlsx",range = "A2:AE7719")
 
+sum(el_salvador$`Unidades Vendidas`)
+sum(nicaragua$`Unidades Vendidas`)
+sum(honduras$`Unidades Vendidas`)
+sum(guatemala$`Unidades Vendidas`)
+
+nica2<-read_excel("Paginacion 2015-2019.xlsx")
+View(nica2)
+
+table(ventas.centroamerica$Margen < 0)
+
+ventasPpais<-c(3206412, 3206412, 3586348, 5210613)
+nombres<-c("El Salvador", "Nicaragua", "Honduras", "Guatemala")
+
+barplot(ventasPpais, main = "Ventas por Pais", names.arg = nombres)
+
+
+table(ventas.centroamerica$`Recursos Especiales`)
+
 #en el salvador el nombre de la categoria conca se encuentra en minusculas, se transforma a mayúsculas
 #para poder llevar a cabo sin problemas la función rbind
 names(el_salvador)[names(el_salvador) == "conca"] <- "CONCA"
@@ -112,7 +130,7 @@ barplot(FRECventas2019, main = "VENTAS EN 2019", names.arg = meses2)
 barplot(h1, main = "VENTAS TOTALES", names.arg = c(meses, meses2))
 
 #Grafico de los 10 productos mas vendidos
-productos<-table(ventas.centroamerica$Producto)
+productos<-table(ventas.centroamerica$`Unidades Vendidas`)
 productos_ordenados<-productos[order(-productos)]
 #Cantidad de cuantos se vendieron de los 10 productos mas vendidos
 yy<-as.character(as.vector(head(productos_ordenados, n = 10)))
@@ -122,6 +140,12 @@ par(mar = c(4, 4, 4, 9), xpd = TRUE)
 productos_ordenados <- head(productos_ordenados, n=10)
 #Lo graficamos
 diez_mas_vendidos<-barplot(productos_ordenados,legend.text = yy, args.legend = list(x = "topright", bty = "n", inset=c(-0.15, 0)),horiz = FALSE, main = "PRODUCTOS MAS VENDIDOS", col = c("darkseagreen","darkseagreen1","darkseagreen2","darkseagreen3","darkseagreen4","darkslategray1","darkslategray2","darkslategray3","darkslategray4","grey"))
+
+
+p1<-(ventas.centroamerica[ventas.centroamerica$Producto == "4123800056",])
+View(p1)
+na.omit(p1$`Unidades Vendidas`)
+sum(p1$`Unidades Vendidas`)
 
 #Obtenemos la descripción de los 10 productos más vendidos
 p1<-as.character(ventas.centroamerica$Descripcion[ventas.centroamerica$Producto == "4123800056"][1])
