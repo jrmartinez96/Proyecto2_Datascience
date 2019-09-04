@@ -229,7 +229,7 @@ silkm<-silhouette(fcm$cluster,dist(vcnum))
 mean(silkm[,3])
 plotcluster(vcnum,fcm$cluster)
 
-# ---------------------------- Reglas de asociación (esto falta) ------------------------
+# ---------------------------- Reglas de asociación  ------------------------
 
 # El m?nimo nivel de soporte y confianza aceptados
 #Debido a la gran cantidad de datos, se escogen únicamente reglas con 0.9 de soportey confianza, así como se limitan parametros para el tiempo de búsqueda (maxtime y maxlen)
@@ -326,7 +326,7 @@ pafvcnum$Correlation
 # Nivel de significación de la prueba
 cortest.bartlett(vcnum)
 
-# Se normalizan los datos para hacer el PCA
+# Se calculan componentes principales y normalizan los datos
 compPrinc<-prcomp(na.omit(vcnum), scale = TRUE)
 summary(compPrinc)
 fviz_pca_var(compPrinc, col.var = "cos2",gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"), repel = TRUE)
