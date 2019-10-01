@@ -33,15 +33,13 @@ nicaragua <- read_excel("nicaragua.xlsx", range = "A2:AE6374")
 honduras <- read_excel("honduras.xlsx", range = "A2:AE6685")
 guatemala <- read_excel("guatemala.xlsx",range = "A2:AE7719")
 
-sum(el_salvador$`Unidades Vendidas`)
-sum(nicaragua$`Unidades Vendidas`)
-sum(honduras$`Unidades Vendidas`)
-sum(guatemala$`Unidades Vendidas`)
+# sum(el_salvador$`Unidades Vendidas`)
+# sum(nicaragua$`Unidades Vendidas`)
+# sum(honduras$`Unidades Vendidas`)
+# sum(guatemala$`Unidades Vendidas`)
+# 
+# table(ventas.centroamerica$Margen < 0)
 
-nica2<-read_excel("Paginacion 2015-2019.xlsx")
-View(nica2)
-
-table(ventas.centroamerica$Margen < 0)
 
 ventasPpais<-c(3206412, 3206412, 3586348, 5210613)
 nombres<-c("El Salvador", "Nicaragua", "Honduras", "Guatemala")
@@ -54,6 +52,23 @@ table(ventas.centroamerica$`Recursos Especiales`)
 #en el salvador el nombre de la categoria conca se encuentra en minusculas, se transforma a mayúsculas
 #para poder llevar a cabo sin problemas la función rbind
 names(el_salvador)[names(el_salvador) == "conca"] <- "CONCA"
+
+
+###### AGREGAR NUEVAS COLUMNAS Y CAMBIAR DE TEXTO A FACTORES PARA TODOS LOS PAISES #######
+
+View(guatemala)
+guatemala$PaisTexto<-"Guatemala"
+guatemala$PaisNumero<-1
+
+el_salvador$PaisTexto<-"El Salvador"
+el_salvador$PaisNumero<-2
+
+honduras$PaisTexto<-"Honduras"
+honduras$PaisNumero<-3
+
+nicaragua$PaisTexto<-"Nicaragua"
+nicaragua$PaisNumero<-4
+
 
 #Union de todas las tablas para crear un conjunto que represente a centroamérica
 ventas.centroamerica<-rbind(guatemala,honduras,nicaragua,el_salvador)
@@ -116,7 +131,7 @@ View(ventas.centroamerica)
 
 #---------------------- Graficas para entender comportamiento  y estado de los datos -----------
 
-# Gráfico de  ventas por AÑO - MES (ventas centroamerica)
+# Gráfico de  ventas por AnoO - MES (ventas centroamerica)
 h1<-table(ventas.centroamerica$`Año Mes`)
 FRECventas2018<-h1[1:12]
 meses<-c("Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago","Sept", "Oct", "Nov","Dic")
@@ -349,7 +364,6 @@ summary(pafvcnum)
 pafvcnum$Correlation
 # Nivel de significación de la prueba
 cortest.bartlett(vcnum)
-
 # Se calculan componentes principales y normalizan los datos
 compPrinc<-prcomp(na.omit(vcnum), scale = TRUE)
 summary(compPrinc)
