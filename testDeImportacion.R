@@ -26,6 +26,7 @@ library(factoextra)
 library(e1071)#para cmeans
 # REGLAS DE ASOCIACI?N
 library(arules)
+library(stringr)
 
 # Unión de todos los datos individuales para lograr un conjunto centroamericano
 el_salvador <- read_excel("el_salvador.xlsx", range = "A2:AE6370")
@@ -69,6 +70,41 @@ honduras$PaisNumero<-3
 nicaragua$PaisTexto<-"Nicaragua"
 nicaragua$PaisNumero<-4
 
+# CAMBIO DE MONEDA POR PAIS
+# EL SALVADOR
+  # 2018
+el_salvador$`Precio Catalogo`[str_detect(el_salvador$CONCA, "2018")] = el_salvador$`Precio Catalogo` * 7.4
+el_salvador$`Precio Vta s/iva`[str_detect(el_salvador$CONCA, "2018")] = el_salvador$`Precio Vta s/iva` * 7.4
+el_salvador$`Venta Neta s/iva`[str_detect(el_salvador$CONCA, "2018")] = el_salvador$`Venta Neta s/iva` * 7.4
+
+  # 2019
+el_salvador$`Precio Catalogo`[str_detect(el_salvador$CONCA, "2019")] = el_salvador$`Precio Catalogo` * 7.8
+el_salvador$`Precio Vta s/iva`[str_detect(el_salvador$CONCA, "2019")] = el_salvador$`Precio Vta s/iva` * 7.8
+el_salvador$`Venta Neta s/iva`[str_detect(el_salvador$CONCA, "2019")] = el_salvador$`Venta Neta s/iva` * 7.8
+
+
+# HONDURAS
+  # 2018
+honduras$`Precio Catalogo`[str_detect(honduras$CONCA, "2018")] = honduras$`Precio Catalogo` * 3.3676
+honduras$`Precio Vta s/iva`[str_detect(honduras$CONCA, "2018")] = honduras$`Precio Vta s/iva` * 3.3676
+honduras$`Venta Neta s/iva`[str_detect(honduras$CONCA, "2018")] = honduras$`Venta Neta s/iva` * 3.3676
+
+  # 2019
+honduras$`Precio Catalogo`[str_detect(honduras$CONCA, "2019")] = honduras$`Precio Catalogo` * 3.2962
+honduras$`Precio Vta s/iva`[str_detect(honduras$CONCA, "2019")] = honduras$`Precio Vta s/iva` * 3.2962
+honduras$`Venta Neta s/iva`[str_detect(honduras$CONCA, "2019")] = honduras$`Venta Neta s/iva` * 3.2962
+
+
+# NICARAGUA
+  # 2018
+nicaragua$`Precio Catalogo`[str_detect(nicaragua$CONCA, "2018")] = nicaragua$`Precio Catalogo` * 4.5830
+nicaragua$`Precio Vta s/iva`[str_detect(nicaragua$CONCA, "2018")] = nicaragua$`Precio Vta s/iva` * 4.5830
+nicaragua$`Venta Neta s/iva`[str_detect(nicaragua$CONCA, "2018")] = nicaragua$`Venta Neta s/iva` * 4.5830
+
+  # 2019
+nicaragua$`Precio Catalogo`[str_detect(nicaragua$CONCA, "2019")] = nicaragua$`Precio Catalogo` * 4.3513
+nicaragua$`Precio Vta s/iva`[str_detect(nicaragua$CONCA, "2019")] = nicaragua$`Precio Vta s/iva` * 4.3513
+nicaragua$`Venta Neta s/iva`[str_detect(nicaragua$CONCA, "2019")] = nicaragua$`Venta Neta s/iva` * 4.3513
 
 #Union de todas las tablas para crear un conjunto que represente a centroamérica
 ventas.centroamerica<-rbind(guatemala,honduras,nicaragua,el_salvador)
