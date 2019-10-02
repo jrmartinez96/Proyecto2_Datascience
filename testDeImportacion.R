@@ -106,6 +106,296 @@ nicaragua$`Precio Catalogo`[str_detect(nicaragua$CONCA, "2019")] = nicaragua$`Pr
 nicaragua$`Precio Vta s/iva`[str_detect(nicaragua$CONCA, "2019")] = nicaragua$`Precio Vta s/iva` * 4.3513
 nicaragua$`Venta Neta s/iva`[str_detect(nicaragua$CONCA, "2019")] = nicaragua$`Venta Neta s/iva` * 4.3513
 
+
+
+# cambio de text a numeros GUATEMALA
+
+as.factor(guatemala$Categoria)
+guatemala$Categoria_Num<-""
+
+l1<-guatemala[guatemala$Categoria == "CABELLO",] 
+l1$Categoria_Num <- 1
+l2<-guatemala[guatemala$Categoria == "CUIDADO DE LA PIEL",] 
+l2$Categoria_Num <- 2
+l3<-guatemala[guatemala$Categoria == "CUIDADO DE LAS UÑAS",] 
+l3$Categoria_Num <- 3
+l4<-guatemala[guatemala$Categoria == "CUIDADO PERSONAL",] 
+l4$Categoria_Num <- 4
+l5<-guatemala[guatemala$Categoria == "DIVISION FARMA",] 
+l5$Categoria_Num <- 5
+l6<-guatemala[guatemala$Categoria == "ELLAS",] 
+l6$Categoria_Num <- 6
+l7<-guatemala[guatemala$Categoria == "ELLOS",] 
+l7$Categoria_Num <- 7
+l8<-guatemala[guatemala$Categoria == "GASTOS PROMOCIONALES",] 
+l8$Categoria_Num <- 8
+l9<-guatemala[guatemala$Categoria == "JOYERIA",] 
+l9$Categoria_Num <- 9
+l10<-guatemala[guatemala$Categoria == "LIMPIEZA",] 
+l10$Categoria_Num <- 10
+l11<-guatemala[guatemala$Categoria == "MAQUILLAJE",] 
+l11$Categoria_Num <- 11
+l12<-guatemala[guatemala$Categoria == "NIÑOS",] 
+l12$Categoria_Num <- 12
+l13<-guatemala[guatemala$Categoria == "PAQUETES",] 
+l13$Categoria_Num <- 13
+l14<-guatemala[guatemala$Categoria == "PREMIOS",] 
+l14$Categoria_Num <- 14
+l15<-guatemala[guatemala$Categoria == "PROMOCIONALES VENDIDOS",] 
+l15$Categoria_Num <- 15
+l16<-guatemala[guatemala$Categoria == "SALUD Y BIENESTAR",] 
+l16$Categoria_Num <- 16
+l17<-guatemala[guatemala$Categoria == "TEENS",] 
+l17$Categoria_Num <- 17
+l18<-guatemala[guatemala$Categoria == "USO DIARIO",] 
+l18$Categoria_Num <- 18
+l19<-guatemala[is.na(guatemala$Categoria),] 
+l19$Categoria_Num <- 19
+
+guatemala<-rbind(l1,l2,l3,l4,l5,l6,l7,l8,l9,l10,l11,l12,l13,l4,l15,l16,l17,l18,l19)
+View(guatemala)
+
+as.factor(guatemala$`Canal de Venta`)
+guatemala$CanalVentaNum<-""
+
+l1<-guatemala[guatemala$`Canal de Venta` == "Catalogo",]
+l1$CanalVentaNum<-1
+l2<-guatemala[guatemala$`Canal de Venta` == "Contingencia",]
+l2$CanalVentaNum<-2
+l3<-guatemala[guatemala$`Canal de Venta` == "Scentia Al Dia",]
+l3$CanalVentaNum<-3
+
+guatemala<-rbind(l1,l2,l3)
+View(guatemala)
+
+guatemala$PaginacionNum<-""
+l1<-guatemala[guatemala$Pagina...22 == "Full spread",]
+l1$PaginacionNum<- 1
+l2<-guatemala[guatemala$Pagina...22 == "pagina derecha",]
+l2$PaginacionNum<- 2
+l3<-guatemala[guatemala$Pagina...22 == "pagina izquierda",]
+l3$PaginacionNum<- 3
+
+guatemala<-rbind(l1,l2,l3)
+View(guatemala)
+
+# cambio de text a numeros EL SALVADOR
+
+as.factor(el_salvador$Categoria)
+el_salvador$Categoria_Num<-""
+View(el_salvador)
+
+l1<-el_salvador[el_salvador$Categoria == "CABELLO",] 
+l1$Categoria_Num <- 1
+l2<-el_salvador[el_salvador$Categoria == "CUIDADO DE LA PIEL",] 
+l2$Categoria_Num <- 2
+l3<-el_salvador[el_salvador$Categoria == "CUIDADO DE LAS UÑAS",] 
+l3$Categoria_Num <- 3
+l4<-el_salvador[el_salvador$Categoria == "CUIDADO PERSONAL",] 
+l4$Categoria_Num <- 4
+l5<-el_salvador[el_salvador$Categoria == "DIVISION FARMA",] 
+l5$Categoria_Num <- 5
+l6<-el_salvador[el_salvador$Categoria == "ELLAS",] 
+l6$Categoria_Num <- 6
+l7<-el_salvador[el_salvador$Categoria == "ELLOS",] 
+l7$Categoria_Num <- 7
+l8<-el_salvador[el_salvador$Categoria == "GASTOS PROMOCIONALES",] 
+l8$Categoria_Num <- 8
+l9<-el_salvador[el_salvador$Categoria == "JOYERIA",] 
+l9$Categoria_Num <- 9
+l10<-el_salvador[el_salvador$Categoria == "LIMPIEZA",] 
+l10$Categoria_Num <- 10
+l11<-el_salvador[el_salvador$Categoria == "MAQUILLAJE",] 
+l11$Categoria_Num <- 11
+l12<-el_salvador[el_salvador$Categoria == "NIÑOS",] 
+l12$Categoria_Num <- 12
+l13<-el_salvador[el_salvador$Categoria == "PAQUETES",] 
+l13$Categoria_Num <- 13
+l14<-el_salvador[el_salvador$Categoria == "PREMIOS",] 
+l14$Categoria_Num <- 14
+l15<-el_salvador[el_salvador$Categoria == "PROMOCIONALES VENDIDOS",] 
+l15$Categoria_Num <- 15
+l16<-el_salvador[el_salvador$Categoria == "SALUD Y BIENESTAR",] 
+l16$Categoria_Num <- 16
+l17<-el_salvador[el_salvador$Categoria == "TEENS",] 
+l17$Categoria_Num <- 17
+l18<-el_salvador[el_salvador$Categoria == "USO DIARIO",] 
+l18$Categoria_Num <- 18
+l19<-el_salvador[is.na(el_salvador$Categoria),] 
+l19$Categoria_Num <- 19
+
+el_salvador<-rbind(l1,l2,l3,l4,l5,l6,l7,l8,l9,l10,l11,l12,l13,l4,l15,l16,l17,l18,l19)
+View(el_salvador)
+
+
+as.factor(el_salvador$`Canal de Venta`)
+el_salvador$CanalVentaNum<-""
+
+l1<-el_salvador[el_salvador$`Canal de Venta` == "Catalogo",]
+l1$CanalVentaNum<-1
+l2<-el_salvador[el_salvador$`Canal de Venta` == "Contingencia",]
+l2$CanalVentaNum<-2
+l3<-el_salvador[el_salvador$`Canal de Venta` == "Scentia Al Dia",]
+l3$CanalVentaNum<-3
+
+el_salvador<-rbind(l1,l2,l3)
+View(el_salvador)
+
+el_salvador$PaginacionNum<-""
+l1<-el_salvador[el_salvador$Pagina...22 == "Full spread",]
+l1$PaginacionNum<-1
+l2<-el_salvador[el_salvador$Pagina...22 == "pagina derecha",]
+l2$PaginacionNum<-2
+l3<-el_salvador[el_salvador$Pagina...22 == "pagina izquierda",]
+l3$PaginacionNum<-3
+
+el_salvador<-rbind(l1,l2,l3)
+View(el_salvador)
+
+
+# cambio de text a numeros HONDURAS
+
+as.factor(honduras$Categoria)
+honduras$Categoria_Num<-""
+
+l1<-honduras[honduras$Categoria == "CABELLO",] 
+l1$Categoria_Num <- 1
+l2<-honduras[honduras$Categoria == "CUIDADO DE LA PIEL",] 
+l2$Categoria_Num <- 2
+l3<-honduras[honduras$Categoria == "CUIDADO DE LAS UÑAS",] 
+l3$Categoria_Num <- 3
+l4<-honduras[honduras$Categoria == "CUIDADO PERSONAL",] 
+l4$Categoria_Num <- 4
+l5<-honduras[honduras$Categoria == "DIVISION FARMA",] 
+l5$Categoria_Num <- 5
+l6<-honduras[honduras$Categoria == "ELLAS",] 
+l6$Categoria_Num <- 6
+l7<-honduras[honduras$Categoria == "ELLOS",] 
+l7$Categoria_Num <- 7
+l8<-honduras[honduras$Categoria == "GASTOS PROMOCIONALES",] 
+l8$Categoria_Num <- 8
+l9<-honduras[honduras$Categoria == "JOYERIA",] 
+l9$Categoria_Num <- 9
+l10<-honduras[honduras$Categoria == "LIMPIEZA",] 
+l10$Categoria_Num <- 10
+l11<-honduras[honduras$Categoria == "MAQUILLAJE",] 
+l11$Categoria_Num <- 11
+l12<-honduras[honduras$Categoria == "NIÑOS",] 
+l12$Categoria_Num <- 12
+l13<-honduras[honduras$Categoria == "PAQUETES",] 
+l13$Categoria_Num <- 13
+l14<-honduras[honduras$Categoria == "PREMIOS",] 
+l14$Categoria_Num <- 14
+l15<-honduras[honduras$Categoria == "PROMOCIONALES VENDIDOS",] 
+l15$Categoria_Num <- 15
+l16<-honduras[honduras$Categoria == "SALUD Y BIENESTAR",] 
+l16$Categoria_Num <- 16
+l17<-honduras[honduras$Categoria == "TEENS",] 
+l17$Categoria_Num <- 17
+l18<-honduras[honduras$Categoria == "USO DIARIO",] 
+l18$Categoria_Num <- 18
+l19<-honduras[is.na(honduras$Categoria),] 
+l19$Categoria_Num <- 19
+
+honduras<-rbind(l1,l2,l3,l4,l5,l6,l7,l8,l9,l10,l11,l12,l13,l4,l15,l16,l17,l18,l19)
+View(honduras)
+
+
+as.factor(honduras$`Canal de Venta`)
+honduras$CanalVentaNum<-""
+
+l1<-honduras[honduras$`Canal de Venta` == "Catalogo",]
+l1$CanalVentaNum<-1
+l2<-honduras[honduras$`Canal de Venta` == "Contingencia",]
+l2$CanalVentaNum<-2
+l3<-honduras[honduras$`Canal de Venta` == "Scentia Al Dia",]
+l3$CanalVentaNum<-3
+
+honduras<-rbind(l1,l2,l3)
+View(honduras)
+
+honduras$PaginacionNum<-""
+l1<-honduras[honduras$Pagina...22 == "Full spread",]
+l1$PaginacionNum<-1
+l2<-honduras[honduras$Pagina...22 == "pagina derecha",]
+l2$PaginacionNum<-2
+l3<-honduras[honduras$Pagina...22 == "pagina izquierda",]
+l3$PaginacionNum<-3
+
+honduras<-rbind(l1,l2,l3)
+View(honduras)
+
+# cambio de text a numeros NICARAGUA
+
+as.factor(nicaragua$Categoria)
+nicaragua$Categoria_Num<-""
+
+l1<-nicaragua[nicaragua$Categoria == "CABELLO",] 
+l1$Categoria_Num <- 1
+l2<-nicaragua[nicaragua$Categoria == "CUIDADO DE LA PIEL",] 
+l2$Categoria_Num <- 2
+l3<-nicaragua[nicaragua$Categoria == "CUIDADO DE LAS UÑAS",] 
+l3$Categoria_Num <- 3
+l4<-nicaragua[nicaragua$Categoria == "CUIDADO PERSONAL",] 
+l4$Categoria_Num <- 4
+l5<-nicaragua[nicaragua$Categoria == "DIVISION FARMA",] 
+l5$Categoria_Num <- 5
+l6<-nicaragua[nicaragua$Categoria == "ELLAS",] 
+l6$Categoria_Num <- 6
+l7<-nicaragua[nicaragua$Categoria == "ELLOS",] 
+l7$Categoria_Num <- 7
+l8<-nicaragua[nicaragua$Categoria == "GASTOS PROMOCIONALES",] 
+l8$Categoria_Num <- 8
+l9<-nicaragua[nicaragua$Categoria == "JOYERIA",] 
+l9$Categoria_Num <- 9
+l10<-nicaragua[nicaragua$Categoria == "LIMPIEZA",] 
+l10$Categoria_Num <- 10
+l11<-nicaragua[nicaragua$Categoria == "MAQUILLAJE",] 
+l11$Categoria_Num <- 11
+l12<-nicaragua[nicaragua$Categoria == "NIÑOS",] 
+l12$Categoria_Num <- 12
+l13<-nicaragua[nicaragua$Categoria == "PAQUETES",] 
+l13$Categoria_Num <- 13
+l14<-nicaragua[nicaragua$Categoria == "PREMIOS",] 
+l14$Categoria_Num <- 14
+l15<-nicaragua[nicaragua$Categoria == "PROMOCIONALES VENDIDOS",] 
+l15$Categoria_Num <- 15
+l16<-nicaragua[nicaragua$Categoria == "SALUD Y BIENESTAR",] 
+l16$Categoria_Num <- 16
+l17<-nicaragua[nicaragua$Categoria == "TEENS",] 
+l17$Categoria_Num <- 17
+l18<-nicaragua[nicaragua$Categoria == "USO DIARIO",] 
+l18$Categoria_Num <- 18
+l19<-nicaragua[is.na(nicaragua$Categoria),] 
+l19$Categoria_Num <- 19
+
+nicaragua<-rbind(l1,l2,l3,l4,l5,l6,l7,l8,l9,l10,l11,l12,l13,l4,l15,l16,l17,l18,l19)
+View(nicaragua)
+
+as.factor(nicaragua$`Canal de Venta`)
+nicaragua$CanalVentaNum<-""
+
+l1<-nicaragua[nicaragua$`Canal de Venta` == "Catalogo",]
+l1$CanalVentaNum<-1
+l2<-nicaragua[nicaragua$`Canal de Venta` == "Contingencia",]
+l2$CanalVentaNum<-2
+l3<-nicaragua[nicaragua$`Canal de Venta` == "Scentia Al Dia",]
+l3$CanalVentaNum<-3
+
+nicaragua<-rbind(l1,l2,l3)
+View(nicaragua)
+
+nicaragua$PaginacionNum<-""
+l1<-nicaragua[nicaragua$Pagina...22 == "Full spread",]
+l1$PaginacionNum<-1
+l2<-nicaragua[nicaragua$Pagina...22 == "pagina derecha",]
+l2$PaginacionNum<-2
+l3<-nicaragua[nicaragua$Pagina...22 == "pagina izquierda",]
+l3$PaginacionNum<-3
+
+nicaragua<-rbind(l1,l2,l3)
+View(nicaragua)
+
 #Union de todas las tablas para crear un conjunto que represente a centroamÃ©rica
 ventas.centroamerica<-rbind(guatemala,honduras,nicaragua,el_salvador)
 
