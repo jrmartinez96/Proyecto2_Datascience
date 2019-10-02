@@ -704,4 +704,3 @@ var<-get_pca_var(vcnumPCA)
 corrplot(var$cos2, is.corr = F)
 
 
-
