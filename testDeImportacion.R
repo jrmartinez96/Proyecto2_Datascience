@@ -27,6 +27,11 @@ library(e1071)#para cmeans
 # REGLAS DE ASOCIACI?N
 library(arules)
 library(stringr)
+library(forecast)
+library(rpart)
+library(party)
+library(tree)
+library(rpart.plot)
 
 # UniÃ³n de todos los datos individuales para lograr un conjunto centroamericano
 el_salvador <- read_excel("el_salvador.xlsx", range = "A2:AE6370")
@@ -117,7 +122,7 @@ l1<-guatemala[guatemala$Categoria == "CABELLO",]
 l1$Categoria_Num <- 1
 l2<-guatemala[guatemala$Categoria == "CUIDADO DE LA PIEL",] 
 l2$Categoria_Num <- 2
-l3<-guatemala[guatemala$Categoria == "CUIDADO DE LAS UÑAS",] 
+l3<-guatemala[guatemala$Categoria == "CUIDADO DE LAS U?AS",] 
 l3$Categoria_Num <- 3
 l4<-guatemala[guatemala$Categoria == "CUIDADO PERSONAL",] 
 l4$Categoria_Num <- 4
@@ -135,7 +140,7 @@ l10<-guatemala[guatemala$Categoria == "LIMPIEZA",]
 l10$Categoria_Num <- 10
 l11<-guatemala[guatemala$Categoria == "MAQUILLAJE",] 
 l11$Categoria_Num <- 11
-l12<-guatemala[guatemala$Categoria == "NIÑOS",] 
+l12<-guatemala[guatemala$Categoria == "NI?OS",] 
 l12$Categoria_Num <- 12
 l13<-guatemala[guatemala$Categoria == "PAQUETES",] 
 l13$Categoria_Num <- 13
@@ -189,7 +194,7 @@ l1<-el_salvador[el_salvador$Categoria == "CABELLO",]
 l1$Categoria_Num <- 1
 l2<-el_salvador[el_salvador$Categoria == "CUIDADO DE LA PIEL",] 
 l2$Categoria_Num <- 2
-l3<-el_salvador[el_salvador$Categoria == "CUIDADO DE LAS UÑAS",] 
+l3<-el_salvador[el_salvador$Categoria == "CUIDADO DE LAS U?AS",] 
 l3$Categoria_Num <- 3
 l4<-el_salvador[el_salvador$Categoria == "CUIDADO PERSONAL",] 
 l4$Categoria_Num <- 4
@@ -207,7 +212,7 @@ l10<-el_salvador[el_salvador$Categoria == "LIMPIEZA",]
 l10$Categoria_Num <- 10
 l11<-el_salvador[el_salvador$Categoria == "MAQUILLAJE",] 
 l11$Categoria_Num <- 11
-l12<-el_salvador[el_salvador$Categoria == "NIÑOS",] 
+l12<-el_salvador[el_salvador$Categoria == "NI?OS",] 
 l12$Categoria_Num <- 12
 l13<-el_salvador[el_salvador$Categoria == "PAQUETES",] 
 l13$Categoria_Num <- 13
@@ -262,7 +267,7 @@ l1<-honduras[honduras$Categoria == "CABELLO",]
 l1$Categoria_Num <- 1
 l2<-honduras[honduras$Categoria == "CUIDADO DE LA PIEL",] 
 l2$Categoria_Num <- 2
-l3<-honduras[honduras$Categoria == "CUIDADO DE LAS UÑAS",] 
+l3<-honduras[honduras$Categoria == "CUIDADO DE LAS U?AS",] 
 l3$Categoria_Num <- 3
 l4<-honduras[honduras$Categoria == "CUIDADO PERSONAL",] 
 l4$Categoria_Num <- 4
@@ -280,7 +285,7 @@ l10<-honduras[honduras$Categoria == "LIMPIEZA",]
 l10$Categoria_Num <- 10
 l11<-honduras[honduras$Categoria == "MAQUILLAJE",] 
 l11$Categoria_Num <- 11
-l12<-honduras[honduras$Categoria == "NIÑOS",] 
+l12<-honduras[honduras$Categoria == "NI?OS",] 
 l12$Categoria_Num <- 12
 l13<-honduras[honduras$Categoria == "PAQUETES",] 
 l13$Categoria_Num <- 13
@@ -334,7 +339,7 @@ l1<-nicaragua[nicaragua$Categoria == "CABELLO",]
 l1$Categoria_Num <- 1
 l2<-nicaragua[nicaragua$Categoria == "CUIDADO DE LA PIEL",] 
 l2$Categoria_Num <- 2
-l3<-nicaragua[nicaragua$Categoria == "CUIDADO DE LAS UÑAS",] 
+l3<-nicaragua[nicaragua$Categoria == "CUIDADO DE LAS U?AS",] 
 l3$Categoria_Num <- 3
 l4<-nicaragua[nicaragua$Categoria == "CUIDADO PERSONAL",] 
 l4$Categoria_Num <- 4
@@ -352,7 +357,7 @@ l10<-nicaragua[nicaragua$Categoria == "LIMPIEZA",]
 l10$Categoria_Num <- 10
 l11<-nicaragua[nicaragua$Categoria == "MAQUILLAJE",] 
 l11$Categoria_Num <- 11
-l12<-nicaragua[nicaragua$Categoria == "NIÑOS",] 
+l12<-nicaragua[nicaragua$Categoria == "NI?OS",] 
 l12$Categoria_Num <- 12
 l13<-nicaragua[nicaragua$Categoria == "PAQUETES",] 
 l13$Categoria_Num <- 13
@@ -703,4 +708,11 @@ summary(vcnumPCA)
 var<-get_pca_var(vcnumPCA)
 corrplot(var$cos2, is.corr = F)
 
+ventas.centroamerica$Pagina...22 <- as.factor(ventas.centroamerica$Pagina...22)
+ventas.centroamerica$`Tipo Precio` <- as.factor(ventas.centroamerica$`Tipo Precio`)
+ventas.centroamerica$`Energy Chart` <- as.factor(ventas.centroamerica$`Energy Chart`)
 
+cabello <- subset(ventas.centroamerica, Categoria_Num == 1)
+
+fit <- rpart(Pagina...22~ `Tipo Precio` + Categoria + Promociones + Linea, method = "class", data = ventas.centroamerica)
+rpart.plot(fit)
