@@ -1,12 +1,12 @@
 # --------------------------------- Proyecto numero 2 Data science -------------------------------
 # ---------------------------------|          SCENTIA             |------------------------------
 # An√°lisis de Ventas Directas en Centroam√©rica
-# Catedr√°tica: Lynette Garc√?a 
+# Catedr√°tica: Lynette Garc??a 
 # Maria Fernanda Rodas	17125
 # Pablo Viana		      	16091
 # Sergio Marchena		    16387
 # Daniel Ixcoy		      16748
-# Jos√© Mart√?nez			    15163
+# Jos√© Mart??nez			    15163
 # Jos√© Meneses		    	1514
 
 #Librerias
@@ -29,8 +29,6 @@ library(arules)
 library(stringr)
 library(forecast)
 library(rpart)
-library(party)
-library(tree)
 library(rpart.plot)
 
 # Uni√≥n de todos los datos individuales para lograr un conjunto centroamericano
@@ -413,8 +411,8 @@ names(ventas.centroamerica)[names(ventas.centroamerica) == "Pagina...22"] <- "Pa
 names(ventas.centroamerica)[names(ventas.centroamerica) == "%...24"] <- "Porcentaje"
 names(ventas.centroamerica)[names(ventas.centroamerica) == "%...26"] <- "Porcentaje2"
 
-#Arreglo nivel 210811 en categoria AÒo mes
-ventas.centroamerica$`AÒo Mes` <- gsub("210811","201811",ventas.centroamerica$`AÒo Mes`)
+#Arreglo nivel 210811 en categoria A?o mes
+ventas.centroamerica$`A?o Mes` <- gsub("210811","201811",ventas.centroamerica$`A?o Mes`)
 
 #Quitar caracteres \r|\n de  columna descripcion
 ventas.centroamerica$Descripcion <- gsub("\r|\n","",ventas.centroamerica$Descripcion)
@@ -449,7 +447,7 @@ ventas.centroamerica$Promociones <- gsub("Promocion Precio|Promocion precio","pr
 ventas.centroamerica$`Treboles extra` <- gsub("SI","si",ventas.centroamerica$`Treboles extra`)
 
 #Cambio de columnas de tipo char a factor
-col_names <- c("AÒo Mes","Producto","Codigo Catalogo","CONCA","Tipo Comision","Pagina_cat","Descripcion","Categoria","Linea","Observaciones","Canal de Venta","Contingencia","Pagina","Tipo Precio","Atributo Neto","Energy Chart","Promociones","Recursos Especiales","Treboles extra")
+col_names <- c("A?o Mes","Producto","Codigo Catalogo","CONCA","Tipo Comision","Pagina_cat","Descripcion","Categoria","Linea","Observaciones","Canal de Venta","Contingencia","Pagina","Tipo Precio","Atributo Neto","Energy Chart","Promociones","Recursos Especiales","Treboles extra")
 ventas.centroamerica$Costo <- as.numeric(ventas.centroamerica$Costo)
 ventas.centroamerica[col_names] <- lapply(ventas.centroamerica[col_names] , factor)
 View(ventas.centroamerica)
@@ -604,7 +602,7 @@ plotcluster(vcnum,fcm$cluster)
 # ---------------------------- Reglas de asociaci√≥n  ------------------------
 
 # El m?nimo nivel de soporte y confianza aceptados
-#Debido a la gran cantidad de datos, se escogen √∫nicamente reglas con 0.9 de soportey confianza, as√? como se limitan parametros para el tiempo de b√∫squeda (maxtime y maxlen)
+#Debido a la gran cantidad de datos, se escogen √∫nicamente reglas con 0.9 de soportey confianza, as?? como se limitan parametros para el tiempo de b√∫squeda (maxtime y maxlen)
 reglas<-apriori(vccat, parameter = list(support = 0.30,
                                        confidence = 0.60,
                                        minlen = 2,
@@ -714,15 +712,15 @@ ventas.centroamerica$Pagina...22 <- as.factor(ventas.centroamerica$Pagina...22)
 ventas.centroamerica$`Tipo Precio` <- as.factor(ventas.centroamerica$`Tipo Precio`)
 ventas.centroamerica$`Energy Chart` <- as.factor(ventas.centroamerica$`Energy Chart`)
 
-cabello <- subset(ventas.centroamerica, Categoria_Num == 1)
 
-fit <- rpart(Pagina...22~ `Tipo Precio` + Categoria + Promociones + Linea, method = "class", data = ventas.centroamerica)
-rpart.plot(fit)
+############################ ARBOLES DE DECISION ###################################
 
 
+fitPagina <- rpart(Pagina~ `Tipo Precio` + Categoria + Promociones, method = "class", data = ventas.centroamerica)
+rpart.plot(fitPagina)
 
-
-
+fitPromociones <- rpart(`Canal de Venta`~ Categoria + Promociones , data = ventas.centroamerica)
+rpart.plot(fitPromociones)
 
 
 
