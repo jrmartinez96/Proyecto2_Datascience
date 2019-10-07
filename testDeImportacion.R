@@ -1,12 +1,12 @@
 # --------------------------------- Proyecto numero 2 Data science -------------------------------
 # ---------------------------------|          SCENTIA             |------------------------------
 # Análisis de Ventas Directas en Centroamérica
-# Catedrática: Lynette García 
+# Catedrática: Lynette Garc�?a 
 # Maria Fernanda Rodas	17125
 # Pablo Viana		      	16091
 # Sergio Marchena		    16387
 # Daniel Ixcoy		      16748
-# José Martínez			    15163
+# José Mart�?nez			    15163
 # José Meneses		    	1514
 
 #Librerias
@@ -403,17 +403,18 @@ View(nicaragua)
 
 #Union de todas las tablas para crear un conjunto que represente a centroamérica
 ventas.centroamerica<-rbind(guatemala,honduras,nicaragua,el_salvador)
+View(ventas.centroamerica)
 
 # ------------------------ Proceso de limpieza de los datos ---------------------------
 
 #Cambio de nombres a columnas
-names(ventas.centroamerica)[names(ventas.centroamerica) == "Pagina..7"] <- "Pagina_cat"
-names(ventas.centroamerica)[names(ventas.centroamerica) == "Pagina..22"] <- "Pagina"
-names(ventas.centroamerica)[names(ventas.centroamerica) == "%..24"] <- "Porcentaje"
-names(ventas.centroamerica)[names(ventas.centroamerica) == "%..26"] <- "Porcentaje2"
+names(ventas.centroamerica)[names(ventas.centroamerica) == "Pagina...7"] <- "Pagina_cat"
+names(ventas.centroamerica)[names(ventas.centroamerica) == "Pagina...22"] <- "Pagina"
+names(ventas.centroamerica)[names(ventas.centroamerica) == "%...24"] <- "Porcentaje"
+names(ventas.centroamerica)[names(ventas.centroamerica) == "%...26"] <- "Porcentaje2"
 
-#Arreglo nivel 210811 en categoría Año mes
-ventas.centroamerica$`Año Mes` <- gsub("210811","201811",ventas.centroamerica$`Año Mes`)
+#Arreglo nivel 210811 en categoria A�o mes
+ventas.centroamerica$`A�o Mes` <- gsub("210811","201811",ventas.centroamerica$`A�o Mes`)
 
 #Quitar caracteres \r|\n de  columna descripcion
 ventas.centroamerica$Descripcion <- gsub("\r|\n","",ventas.centroamerica$Descripcion)
@@ -448,10 +449,11 @@ ventas.centroamerica$Promociones <- gsub("Promocion Precio|Promocion precio","pr
 ventas.centroamerica$`Treboles extra` <- gsub("SI","si",ventas.centroamerica$`Treboles extra`)
 
 #Cambio de columnas de tipo char a factor
-col_names <- c("Año Mes","Producto","Codigo Catalogo","CONCA","Tipo Comision","Pagina_cat","Descripcion","Categoria","Linea","Observaciones","Canal de Venta","Contingencia","Pagina","Tipo Precio","Atributo Neto","Energy Chart","Promociones","Recursos Especiales","Treboles extra")
+col_names <- c("A�o Mes","Producto","Codigo Catalogo","CONCA","Tipo Comision","Pagina_cat","Descripcion","Categoria","Linea","Observaciones","Canal de Venta","Contingencia","Pagina","Tipo Precio","Atributo Neto","Energy Chart","Promociones","Recursos Especiales","Treboles extra")
 ventas.centroamerica$Costo <- as.numeric(ventas.centroamerica$Costo)
 ventas.centroamerica[col_names] <- lapply(ventas.centroamerica[col_names] , factor)
 View(ventas.centroamerica)
+
 #Codigo utilizado para hacer un resumen del dataset con todos los niveles de los factores para corregir uno por uno
 # sink("resumen_datos.png")
 # print(summary(ventas.centroamerica, maxsum = max(lengths(lapply(ventas.centroamerica, unique)))))
@@ -602,7 +604,7 @@ plotcluster(vcnum,fcm$cluster)
 # ---------------------------- Reglas de asociación  ------------------------
 
 # El m?nimo nivel de soporte y confianza aceptados
-#Debido a la gran cantidad de datos, se escogen únicamente reglas con 0.9 de soportey confianza, así como se limitan parametros para el tiempo de búsqueda (maxtime y maxlen)
+#Debido a la gran cantidad de datos, se escogen únicamente reglas con 0.9 de soportey confianza, as�? como se limitan parametros para el tiempo de búsqueda (maxtime y maxlen)
 reglas<-apriori(vccat, parameter = list(support = 0.30,
                                        confidence = 0.60,
                                        minlen = 2,
@@ -716,3 +718,99 @@ cabello <- subset(ventas.centroamerica, Categoria_Num == 1)
 
 fit <- rpart(Pagina...22~ `Tipo Precio` + Categoria + Promociones + Linea, method = "class", data = ventas.centroamerica)
 rpart.plot(fit)
+
+
+
+
+
+
+
+
+############################ MODELOS DE PREDICCION ###################################
+
+
+# REDES BAYESIANAS
+num <- unlist(lapply(ventas.centroamerica, is.numeric))
+cat <- unlist(lapply(ventas.centroamerica, is.factor))
+vcnum <- ventas.centroamerica[,num]
+View(vcnum)
+
+
+# NAIVE BAYES
+install.packages("e1071")
+install.packages("caret")
+library(e1071)
+library(caret)
+
+
+porcentaje<-0.7
+newVcnum<-na.omit(vcnum)
+newVcnum$Pronostico<- as.factor(newVcnum$Pronostico)
+datosTraining<-newVcnum
+set.seed(678)
+
+View(datosTraining)
+str(datosTraining$Pronostico)
+
+corte<-sample(nrow(datosTraining),nrow(datosTraining)*porcentaje)
+train<-datosTraining[corte,]
+test<-datosTraining[-corte,]
+
+
+modelo<-naiveBayes(as.factor(Pronostico)~.,data=train)
+
+
+predBayes<-predict(modelo, newdata = test)
+predBayes
+
+hola<-test
+hola$PronosticoBayes<-predBayes
+
+
+cfmBayes<-confusionMatrix(predBayes,as.factor(test$Pronostico))
+cfmBayes
+
+
+######################## NUEVO ANALISIS EXPLORATORIO ######################## 
+
+
+table(ventas.centroamerica$PaisTexto)
+prueba<-guatemala
+prueba[is.na(prueba)] <- 0
+guatemala<-prueba
+
+prueba<-el_salvador
+prueba[is.na(prueba)]<- 0
+el_salvador<-prueba
+
+prueba<-honduras
+prueba[is.na(prueba)]<- 0
+honduras<-prueba
+
+prueba<-nicaragua
+prueba[is.na(prueba)]<- 0
+nicaragua<-prueba
+
+prueba<-vcnum
+prueba[is.na(prueba)] <- 0
+View(prueba)
+vcnum <- prueba
+
+
+hola<-vcnum[vcnum$CanalVentaNum == 1,]
+View(hola)
+VentasCatalogo<-sum(hola$`Unidades Vendidas`)
+
+hola<-vcnum[vcnum$CanalVentaNum == 2,]
+View(hola)
+VentasContingencia<-sum(hola$`Unidades Vendidas`)
+
+hola<-vcnum[vcnum$CanalVentaNum == 3,]
+View(hola)
+VentasScentiaAlDia<-sum(hola$`Unidades Vendidas`)
+
+ventasCanalVentas<-c(VentasCatalogo,VentasContingencia,VentasScentiaAlDia)
+ventasCanalVentas
+
+barplot(ventasCanalVentas, xlab = "Canal de Venta", ylab = "Unidades Vendidas", main = "Ventas por Canal de Venta", names.arg = c("Catalogo", "Contingencia", "Scentia Al Dia"))
+
