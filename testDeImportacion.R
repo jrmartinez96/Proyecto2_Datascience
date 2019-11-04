@@ -1,12 +1,12 @@
 # --------------------------------- Proyecto numero 2 Data science -------------------------------
 # ---------------------------------|          SCENTIA             |------------------------------
 # Análisis de Ventas Directas en Centroamérica
-# Catedrática: Lynette Garc�?a 
+# Catedrática: Lynette Garc�???a 
 # Maria Fernanda Rodas	17125
 # Pablo Viana		      	16091
 # Sergio Marchena		    16387
 # Daniel Ixcoy		      16748
-# José Mart�?nez			    15163
+# José Mart�???nez			  15163
 # José Meneses		    	1514
 
 #Librerias
@@ -604,7 +604,7 @@ plotcluster(vcnum,fcm$cluster)
 # ---------------------------- Reglas de asociación  ------------------------
 
 # El m?nimo nivel de soporte y confianza aceptados
-#Debido a la gran cantidad de datos, se escogen únicamente reglas con 0.9 de soportey confianza, as�? como se limitan parametros para el tiempo de búsqueda (maxtime y maxlen)
+#Debido a la gran cantidad de datos, se escogen únicamente reglas con 0.9 de soportey confianza, as�??? como se limitan parametros para el tiempo de búsqueda (maxtime y maxlen)
 reglas<-apriori(vccat, parameter = list(support = 0.30,
                                        confidence = 0.60,
                                        minlen = 2,
@@ -730,6 +730,7 @@ rpart.plot(fit)
 
 
 # REDES BAYESIANAS
+
 num <- unlist(lapply(ventas.centroamerica, is.numeric))
 cat <- unlist(lapply(ventas.centroamerica, is.factor))
 vcnum <- ventas.centroamerica[,num]
@@ -739,6 +740,8 @@ View(vcnum)
 # NAIVE BAYES
 install.packages("e1071")
 install.packages("caret")
+install.packages("naivebayes")
+library(naivebayes)
 library(e1071)
 library(caret)
 
@@ -746,6 +749,7 @@ library(caret)
 porcentaje<-0.7
 newVcnum<-na.omit(vcnum)
 newVcnum$Pronostico<- as.factor(newVcnum$Pronostico)
+newVcnum$`Unidades Vendidas` <- as.factor(newVcnum$`Unidades Vendidas`)
 datosTraining<-newVcnum
 set.seed(678)
 
@@ -756,9 +760,7 @@ corte<-sample(nrow(datosTraining),nrow(datosTraining)*porcentaje)
 train<-datosTraining[corte,]
 test<-datosTraining[-corte,]
 
-
-modelo<-naiveBayes(as.factor(Pronostico)~.,data=train)
-
+modelo<-naiveBayes(`Unidades Vendidas`~.,data=train)
 
 predBayes<-predict(modelo, newdata = test)
 predBayes
@@ -766,11 +768,21 @@ predBayes
 hola<-test
 hola$PronosticoBayes<-predBayes
 
-
-cfmBayes<-confusionMatrix(predBayes,as.factor(test$Pronostico))
+cfmBayes<-confusionMatrix(predBayes,as.factor(test$`Unidades Vendidas`))
 cfmBayes
 
+prueba<-ventas.centroamerica
+prueba<-data.frame(ventas.centroamerica,stringsAsFactors = TRUE)
+View(prueba)
 
+
+modelo2<-naive_bayes(`Unidades Vendidas`~.,data=train,laplace = 1)
+predBayes2<-predict(modelo2, newdata = test)
+cfmBayes2<-confusionMatrix(predBayes2, as.factor(test$`Unidades Vendidas`))
+cfmBayes2
+
+
+View(prueba)
 ######################## NUEVO ANALISIS EXPLORATORIO ######################## 
 
 
@@ -814,3 +826,9 @@ ventasCanalVentas
 
 barplot(ventasCanalVentas, xlab = "Canal de Venta", ylab = "Unidades Vendidas", main = "Ventas por Canal de Venta", names.arg = c("Catalogo", "Contingencia", "Scentia Al Dia"))
 
+
+
+
+############## redes neuronales #################
+
+############## random forest ###############
