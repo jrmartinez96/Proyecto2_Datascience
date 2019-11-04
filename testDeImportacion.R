@@ -9,10 +9,33 @@
 # José Mart??nez			    15163
 # José Meneses		    	1514
 
+#Instalar librerias
+# install.packages("readxl")
+# install.packages("dplyr")
+# install.packages("frequency")
+# install.packages("rela")	
+# install.packages("psych")
+# install.packages("FactoMineR")	
+# install.packages("corrplot")	
+# install.packages("NbClust")	
+# install.packages("fpc")	
+# install.packages("cluster")	
+# install.packages("fpc")
+# install.packages("factoextra")
+# install.packages("e1071")#para cmeans
+# # REGLAS DE ASOCIACI?N
+# install.packages("arules")
+# install.packages("stringr")
+# install.packages("forecast")
+# install.packages("rpart")
+# install.packages("rpart.plot")
+# install.packages("caret")
+
+
 #Librerias
 #Programa para juntar todos los xls en una tabla y exportar un RDATA
-library("readxl")
-library("dplyr")
+library(readxl)
+library(dplyr)
 library(frequency)
 library(rela)	
 library(psych)	
@@ -30,6 +53,7 @@ library(stringr)
 library(forecast)
 library(rpart)
 library(rpart.plot)
+library(caret)
 
 # Unión de todos los datos individuales para lograr un conjunto centroamericano
 el_salvador <- read_excel("el_salvador.xlsx", range = "A2:AE6370")
@@ -49,9 +73,6 @@ ventasPpais<-c(3206412, 3206412, 3586348, 5210613)
 nombres<-c("El Salvador", "Nicaragua", "Honduras", "Guatemala")
 
 barplot(ventasPpais, main = "Ventas por Pais", names.arg = nombres)
-
-
-table(ventas.centroamerica$`Recursos Especiales`)
 
 #en el salvador el nombre de la categoria conca se encuentra en minusculas, se transforma a mayúsculas
 #para poder llevar a cabo sin problemas la función rbind
@@ -412,7 +433,7 @@ names(ventas.centroamerica)[names(ventas.centroamerica) == "%...24"] <- "Porcent
 names(ventas.centroamerica)[names(ventas.centroamerica) == "%...26"] <- "Porcentaje2"
 
 #Arreglo nivel 210811 en categoria A?o mes
-ventas.centroamerica$`A?o Mes` <- gsub("210811","201811",ventas.centroamerica$`A?o Mes`)
+ventas.centroamerica$`Año Mes` <- gsub("210811","201811",ventas.centroamerica$`Año Mes`)
 
 #Quitar caracteres \r|\n de  columna descripcion
 ventas.centroamerica$Descripcion <- gsub("\r|\n","",ventas.centroamerica$Descripcion)
@@ -447,9 +468,10 @@ ventas.centroamerica$Promociones <- gsub("Promocion Precio|Promocion precio","pr
 ventas.centroamerica$`Treboles extra` <- gsub("SI","si",ventas.centroamerica$`Treboles extra`)
 
 #Cambio de columnas de tipo char a factor
-col_names <- c("A?o Mes","Producto","Codigo Catalogo","CONCA","Tipo Comision","Pagina_cat","Descripcion","Categoria","Linea","Observaciones","Canal de Venta","Contingencia","Pagina","Tipo Precio","Atributo Neto","Energy Chart","Promociones","Recursos Especiales","Treboles extra")
+col_names <- c("Año Mes","Producto","Codigo Catalogo","CONCA","Tipo Comision","Pagina_cat","Descripcion","Categoria","Linea","Observaciones","Canal de Venta","Contingencia","Pagina","Tipo Precio","Atributo Neto","Energy Chart","Promociones","Recursos Especiales","Treboles extra")
 ventas.centroamerica$Costo <- as.numeric(ventas.centroamerica$Costo)
 ventas.centroamerica[col_names] <- lapply(ventas.centroamerica[col_names] , factor)
+ventas.centroamerica <- subset(ventas.centroamerica, !is.na(Producto))
 View(ventas.centroamerica)
 
 #Codigo utilizado para hacer un resumen del dataset con todos los niveles de los factores para corregir uno por uno
@@ -735,14 +757,6 @@ cat <- unlist(lapply(ventas.centroamerica, is.factor))
 vcnum <- ventas.centroamerica[,num]
 View(vcnum)
 
-
-# NAIVE BAYES
-install.packages("e1071")
-install.packages("caret")
-library(e1071)
-library(caret)
-
-
 porcentaje<-0.7
 newVcnum<-na.omit(vcnum)
 newVcnum$Pronostico<- as.factor(newVcnum$Pronostico)
@@ -770,6 +784,15 @@ hola$PronosticoBayes<-predBayes
 cfmBayes<-confusionMatrix(predBayes,as.factor(test$Pronostico))
 cfmBayes
 
+############################ Redes neuronales ###################################
+
+#Seleccionamos un dataframe solo con el producto, las unidades vendidas, y el pronostico por unidad
+p_uv_pro <- ventas.centroamerica[,c(2,11,12)]
+
+#Agrupamos por producto, y sumamos sus u/v y pronosticos a traves de los años
+p_uv_pro <- aggregate(cbind(p_uv_pro$Pronostico, p_uv_pro$`Unidades Vendidas`),by=list(Producto=p_uv_pro$Producto), FUN=sum)
+
+p_uv_pro$diferencia <- p_uv_pro$V1 - p_uv_pro$V2
 
 ######################## NUEVO ANALISIS EXPLORATORIO ######################## 
 
