@@ -722,6 +722,8 @@ rpart.plot(fitPagina)
 fitPromociones <- rpart(`Canal de Venta`~ Categoria + Promociones , data = ventas.centroamerica)
 rpart.plot(fitPromociones)
 
+fitRecursos <- rpart(`Recursos Especiales` ~ Categoria + Promociones ,data = ventas.centroamerica)
+rpart.plot(fitRecursos)
 
 
 ############################ MODELOS DE PREDICCION ###################################
