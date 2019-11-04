@@ -1,5 +1,15 @@
 
 install.packages("openxlsx")
+install.packages("forecast")
+install.packages("fUnitRoots")
+install.packages("ggfortify")
+install.packages("xts")
+
+library(forecast)
+library(tseries)
+library(fUnitRoots)
+library(ggfortify)
+library(xts)
 library("openxlsx")
 
 PagGuate <- read.xlsx("PAG-GT.xlsx", sheet = 1, startRow = 1, colNames = TRUE)
@@ -118,4 +128,63 @@ plot(aggregate(myts,FUN=mean))
 decomposeUniVendidas<-decompose(myts)
 plot(decomposeUniVendidas)
 plot(decomposeUniVendidas$seasonal)
+
+
+#Aplicaremos una transformacion logaritmica
+logUniVendidas <- log(myts)
+plot(logUniVendidas, type="l", main="Serie de Tiempo de Unidades Vendias con Transf. Log", ylab="Unidades Vendidas")
+
+#Grafico de autocorrelacion
+acf(logUniVendidas, type="correlation", lag.max = 100, main = "Grafico de correlacion serie de tiempo Unidades Vendidas" )
+
+#Utilizacion de prueba Dickey-Fuller para raices unitarias
+adfTest(logUniVendidas)
+adfTest(diff(logUniVendidas))
+
+# funciones de autocorrelacion y autocorrelacion parcial
+acf(diff(logUniVendidas),12) #2 valores que pasan la linea punteada
+pacf(diff(logUniVendidas)) #6 valores pasan la linea punteada
+#Funcion autoarima para encontrar valores propuestos de p, d y q
+auto.arima(logUniVendidas) #5, 1, 1
+
+# Al utilizar la funcion de auto-arima los valores del output no cambian
+# en mÃ¡s de 1 nÃºmero con los obtenidos a traves de las funciones de autocorrelacion
+# y autocorrelacion parcial, por lo que la funcion autoarima pareciera tener coherencia
+# y sentido con el modelo
+# 
+fit <- arima(logdiesel, c(6, 1, 2),seasonal = list(order = c(0, 1, 1), period = 12))
+fit.2 <- arima(logdiesel, c(6, 1, 2),seasonal = list(order = c(0, 1, 0), period = 12))
+#Utilizando valores p, d y q obtenidos en autoarima
+fit.3 <- arima(logdiesel, c(5, 1, 1),seasonal = list(order = c(0, 1, 1), period = 12))
+
+#predicciones con cada uno de los modelos propuestos
+pred <- predict(fit, n.ahead = 10*12)
+pred.1 <- predict(fit.2, n.ahead = 10*12)
+pred.2 <- predict(fit.3, n.ahead = 10*12)
+
+ts.plot(serietiempo.diesel,2.718^pred$pred, log = "y", lty = c(1,3))
+ts.plot(serietiempo.diesel,2.718^pred.1$pred, log = "y", lty = c(1,3))
+ts.plot(serietiempo.diesel,2.718^pred.2$pred, log = "y", lty = c(1,3))
+
+##### PREDICCIONES #####
+
+#PARA LAS PREDICCIONES SOLO VAMOS A USAR ANIOS DE 2001-2016
+aniosPredicciones<-datos[datos$Anio <= 2016,]
+
+#Hacemos una tabla unicamente con los valores de aÃ±o, mes y diesel importado
+importacion.diesel <- datos[,c(1,2,9)]
+
+#Pegamos en una misma columna el aÃ±o, el mes y agregamos un 1. Esto para obtener un formato de fecha estÃ¡ndar Y-M-D
+importacion.diesel$Anio <- paste(importacion.diesel$Anio, importacion.diesel$Mes, 1, sep="-")
+importacion.diesel$Mes <- NULL
+
+#Cambiamos la clase de la variable aÃ±o a Date
+importacion.diesel <- mutate(importacion.diesel, Anio = as.Date(Anio, format= "%Y-%m-%d"))
+
+#Creamos una serie de tiempo con las fechas y volumenes de importacion de diesel
+serietiempo.diesel <- xts(importacion.diesel$Diesel, order.by = importacion.diesel$Anio, frequency = 12)
+serietiempo.diesel <- ts(serietiempo.diesel, start=c(2001,1), end=c(2016,12), frequency = 12)
+
+
+
 
