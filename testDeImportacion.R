@@ -2,13 +2,13 @@
 # ---------------------------------|          SCENTIA             |------------------------------
 # Análisis de Ventas Directas en Centroamérica
 
-# Catedrática: Lynette Garc�???a 
+# Catedrática: Lynette Garc????a 
 # Catedrática: Lynette Garc??a 
 # Maria Fernanda Rodas	17125
 # Pablo Viana		      	16091
 # Sergio Marchena		    16387
 # Daniel Ixcoy		      16748
-# José Mart�???nez			  15163
+# José Mart????nez			  15163
 # José Mart??nez			    15163
 # José Meneses		    	1514
 
@@ -33,6 +33,7 @@
 # install.packages("rpart")
 # install.packages("rpart.plot")
 # install.packages("caret")
+#install.packages("neuralnet")
 
 
 #Librerias
@@ -57,6 +58,7 @@ library(forecast)
 library(rpart)
 library(rpart.plot)
 library(caret)
+library(neuralnet)
 
 # Unión de todos los datos individuales para lograr un conjunto centroamericano
 el_salvador <- read_excel("el_salvador.xlsx", range = "A2:AE6370")
@@ -627,7 +629,7 @@ plotcluster(vcnum,fcm$cluster)
 # ---------------------------- Reglas de asociación  ------------------------
 
 # El m?nimo nivel de soporte y confianza aceptados
-#Debido a la gran cantidad de datos, se escogen únicamente reglas con 0.9 de soportey confianza, as�??? como se limitan parametros para el tiempo de búsqueda (maxtime y maxlen)
+#Debido a la gran cantidad de datos, se escogen únicamente reglas con 0.9 de soportey confianza, as???? como se limitan parametros para el tiempo de búsqueda (maxtime y maxlen)
 #Debido a la gran cantidad de datos, se escogen únicamente reglas con 0.9 de soportey confianza, as?? como se limitan parametros para el tiempo de búsqueda (maxtime y maxlen)
 reglas<-apriori(vccat, parameter = list(support = 0.30,
                                        confidence = 0.60,
@@ -815,8 +817,34 @@ p_uv_pro <- aggregate(cbind(p_uv_pro$Pronostico, p_uv_pro$`Unidades Vendidas`),b
 
 p_uv_pro$diferencia <- p_uv_pro$V1 - p_uv_pro$V2
 
+p_uv_pro_asc <- p_uv_pro[order(p_uv_pro$diferencia),]
+p_uv_pro_desc <- p_uv_pro[order(-p_uv_pro$diferencia),]
 
-View(prueba)
+nn_ventas_centroamerica <- subset(ventas.centroamerica, subset = Producto %in% c(4123660489,4123310128,4123310128,4123320382,4123320398,4323580808,4123210921,4123210924,4123660778,4323580477,4123320383,4123660107,4123660184,4123310157,4323580520,4123660683,4323621560,4123660798,4123660738,4123660155,4123320424))
+
+nn_ventas_centroamerica <- nn_ventas_centroamerica[,num <- unlist(lapply(ventas.centroamerica, is.numeric))]
+nn_ventas_centroamerica[is.na(nn_ventas_centroamerica)] <- 0
+
+corte_nn<-sample(nrow(nn_ventas_centroamerica),nrow(nn_ventas_centroamerica)*porcentaje)
+train_nn<-nn_ventas_centroamerica[corte_nn,]
+test_nn<-nn_ventas_centroamerica[-corte_nn,]
+test_nn <- as.data.frame(test_nn)
+
+colnames(train_nn) <- c("precio_catalogo","precio_sin_iva","pronostico","uni_vendidas","venta_neta","costo","utilidad","margen","pedido_real","ratio","porcentaje","porcentaje_2","pais_numero","categoria_numero","canalventa_numero","paginacion_numero")
+colnames(test_nn) <- c("precio_catalogo","precio_sin_iva","pronostico","uni_vendidas","venta_neta","costo","utilidad","margen","pedido_real","ratio","porcentaje","porcentaje_2","pais_numero","categoria_numero","canalventa_numero","paginacion_numero")
+
+nn_model <- neuralnet(pronostico ~., data = train_nn, hidden=c(4,3,2,1), linear.output=FALSE, threshold=0.01 )
+
+temp_test <- subset(test_nn, select = c("precio_catalogo","precio_sin_iva","uni_vendidas","venta_neta","costo","utilidad","margen","pedido_real","ratio","porcentaje","porcentaje_2","pais_numero","categoria_numero","canalventa_numero","paginacion_numero"))
+nn.results <- compute(nn_model, temp_test)
+results <- data.frame(actual = test_nn$Pronostico, prediction = nn.results$net.result)
+
+roundedresults<-sapply(results,round,digits=0)
+roundedresultsdf=data.frame(roundedresults)
+attach(roundedresultsdf)
+table(actual,prediction)
+
+
 ######################## NUEVO ANALISIS EXPLORATORIO ######################## 
 
 
