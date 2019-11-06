@@ -13,6 +13,11 @@ library(xts)
 library("openxlsx")
 
 PagGuate <- read.xlsx("PAG-GT.xlsx", sheet = 1, startRow = 1, colNames = TRUE)
+
+mesesN<-c(1,2,3,4,5,6,7,8,9,10,11,12)
+
+PagGuate <- read.xlsx("PAG-GT.xlsx", sheet = 1, startRow = 1, colNames = TRUE)
+
 PagGuate$Pais<-"Guatemala"
 View(head(PagGuate))
 
@@ -49,6 +54,7 @@ v201512<-sum(PagCentroamerica[which(PagCentroamerica[,1] == "201512"),11])
 v2015<-rbind(v201501, v201502, v201503, v201504,v201505, v201506, v201507, v201508, v201509, v201510, v201511, v201512)
 v2015<-as.data.frame(v2015)
 v2015$Anio <- 2015
+v2015$Mes<-mesesN
 View(v2015)
 
 #2016
@@ -68,6 +74,7 @@ v201512<-sum(PagCentroamerica[which(PagCentroamerica[,1] == "201612"),11])
 v2016<-rbind(v201501, v201502, v201503, v201504,v201505, v201506, v201507, v201508, v201509, v201510, v201511, v201512)
 v2016<-as.data.frame(v2016)
 v2016$Anio <- 2016
+v2016$Mes<-mesesN
 View(v2016)
 
 #2017
@@ -87,6 +94,7 @@ v201512<-sum(PagCentroamerica[which(PagCentroamerica[,1] == "201712"),11])
 v2017<-rbind(v201501, v201502, v201503, v201504,v201505, v201506, v201507, v201508, v201509, v201510, v201511, v201512)
 v2017<-as.data.frame(v2017)
 v2017$Anio <- 2017
+v2017$Mes<-mesesN
 View(v2017)
 
 #2018
@@ -106,6 +114,7 @@ v201512<-sum(PagCentroamerica[which(PagCentroamerica[,1] == "201812"),11])
 v2018<-rbind(v201501, v201502, v201503, v201504,v201505, v201506, v201507, v201508, v201509, v201510, v201511, v201512)
 v2018<-as.data.frame(v2018)
 v2018$Anio <- 2018
+v2018$Mes<-mesesN
 View(v2018)
 
 vector<-rbind(v2015, v2016, v2017, v2018)
@@ -126,6 +135,7 @@ plot(aggregate(myts,FUN=mean))
 
 #descomponemos la serie de tiempo en tendencia, estacionaridad e innovacion
 decomposeUniVendidas<-decompose(myts)
+plot(decomposeUniVendidas$trend)
 plot(decomposeUniVendidas)
 plot(decomposeUniVendidas$seasonal)
 
@@ -141,6 +151,8 @@ acf(logUniVendidas, type="correlation", lag.max = 100, main = "Grafico de correl
 adfTest(logUniVendidas)
 adfTest(diff(logUniVendidas))
 
+
+#######################3
 # funciones de autocorrelacion y autocorrelacion parcial
 acf(diff(logUniVendidas),12) #2 valores que pasan la linea punteada
 pacf(diff(logUniVendidas)) #6 valores pasan la linea punteada
@@ -151,7 +163,7 @@ auto.arima(logUniVendidas) #5, 1, 1
 # en mÃ¡s de 1 nÃºmero con los obtenidos a traves de las funciones de autocorrelacion
 # y autocorrelacion parcial, por lo que la funcion autoarima pareciera tener coherencia
 # y sentido con el modelo
-# 
+#
 fit <- arima(logdiesel, c(6, 1, 2),seasonal = list(order = c(0, 1, 1), period = 12))
 fit.2 <- arima(logdiesel, c(6, 1, 2),seasonal = list(order = c(0, 1, 0), period = 12))
 #Utilizando valores p, d y q obtenidos en autoarima
@@ -185,6 +197,17 @@ importacion.diesel <- mutate(importacion.diesel, Anio = as.Date(Anio, format= "%
 serietiempo.diesel <- xts(importacion.diesel$Diesel, order.by = importacion.diesel$Anio, frequency = 12)
 serietiempo.diesel <- ts(serietiempo.diesel, start=c(2001,1), end=c(2016,12), frequency = 12)
 
+#######################
+4123660489
+4123310128
+4123320382
 
+4123811184
+4123660211
+4123811146
 
+PagCentroamerica[PagCentroamerica$Producto == 4123310128, ]
 
+PagCentroamerica[page]
+
+View(pro1)
