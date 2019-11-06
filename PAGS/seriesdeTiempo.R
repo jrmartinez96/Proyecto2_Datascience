@@ -15,18 +15,19 @@ library("openxlsx")
 mesesN<-c(1,2,3,4,5,6,7,8,9,10,11,12)
 
 PagGuate <- read.xlsx("PAG-GT.xlsx", sheet = 1, startRow = 1, colNames = TRUE)
+
 PagGuate$Pais<-"Guatemala"
 View(head(PagGuate))
 
-PagHon <- read.xlsx("PAG-HO.xlsx", sheet = 1, startRow = 1, colNames = TRUE)
+PagHon <- read.xlsx("PAGS/PAG-HO.xlsx", sheet = 1, startRow = 1, colNames = TRUE)
 PagHon$Pais<-"Honduras"
 View(head(PagHon))
 
-PagEL <- read.xlsx("PAG-EL.xlsx", sheet = 1, startRow = 1, colNames = TRUE)
+PagEL <- read.xlsx("PAGS/PAG-EL.xlsx", sheet = 1, startRow = 1, colNames = TRUE)
 PagEL$Pais<-"El Salvador"
 View(head(PagEL))
 
-PagNi <- read.xlsx("PAG-NI.xlsx", sheet = 1, startRow = 1, colNames = TRUE)
+PagNi <- read.xlsx("PAGS/PAG-NI.xlsx", sheet = 1, startRow = 1, colNames = TRUE)
 PagNi$Pais<-"Nicaragua"
 View(head(PagNi))
 
@@ -160,7 +161,7 @@ auto.arima(logUniVendidas) #5, 1, 1
 # en mÃ¡s de 1 nÃºmero con los obtenidos a traves de las funciones de autocorrelacion
 # y autocorrelacion parcial, por lo que la funcion autoarima pareciera tener coherencia
 # y sentido con el modelo
-# 
+#
 fit <- arima(logdiesel, c(6, 1, 2),seasonal = list(order = c(0, 1, 1), period = 12))
 fit.2 <- arima(logdiesel, c(6, 1, 2),seasonal = list(order = c(0, 1, 0), period = 12))
 #Utilizando valores p, d y q obtenidos en autoarima
@@ -208,9 +209,3 @@ PagCentroamerica[PagCentroamerica$Producto == 4123310128, ]
 PagCentroamerica[page]
 
 View(pro1)
-
-
-
-
-
-
