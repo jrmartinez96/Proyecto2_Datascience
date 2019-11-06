@@ -206,8 +206,14 @@ serietiempo.diesel <- ts(serietiempo.diesel, start=c(2001,1), end=c(2016,12), fr
 4123660211
 4123811146
 
-PagCentroamerica[PagCentroamerica$Producto == 4123310128, ]
+PagCentroamerica$Producto<-as.character(PagCentroamerica$Producto)
 
-PagCentroamerica[page]
+hola<-PagCentroamerica[PagCentroamerica$Producto == "4123310128 ",]
 
-View(pro1)
+View(hola)
+View(PagCentroamerica)
+
+
+
+
+
