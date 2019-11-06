@@ -12,19 +12,19 @@ library(ggfortify)
 library(xts)
 library("openxlsx")
 
-PagGuate <- read.xlsx("PAGS/PAG-GT.xlsx", sheet = 1, startRow = 1, colNames = TRUE)
+PagGuate <- read.xlsx("PAG-GT.xlsx", sheet = 1, startRow = 1, colNames = TRUE)
 PagGuate$Pais<-"Guatemala"
 View(head(PagGuate))
 
-PagHon <- read.xlsx("PAGS/PAG-HO.xlsx", sheet = 1, startRow = 1, colNames = TRUE)
+PagHon <- read.xlsx("PAG-HO.xlsx", sheet = 1, startRow = 1, colNames = TRUE)
 PagHon$Pais<-"Honduras"
 View(head(PagHon))
 
-PagEL <- read.xlsx("PAGS/PAG-EL.xlsx", sheet = 1, startRow = 1, colNames = TRUE)
+PagEL <- read.xlsx("PAG-EL.xlsx", sheet = 1, startRow = 1, colNames = TRUE)
 PagEL$Pais<-"El Salvador"
 View(head(PagEL))
 
-PagNi <- read.xlsx("PAGS/PAG-NI.xlsx", sheet = 1, startRow = 1, colNames = TRUE)
+PagNi <- read.xlsx("PAG-NI.xlsx", sheet = 1, startRow = 1, colNames = TRUE)
 PagNi$Pais<-"Nicaragua"
 View(head(PagNi))
 
