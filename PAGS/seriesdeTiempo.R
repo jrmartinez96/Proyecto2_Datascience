@@ -198,21 +198,134 @@ serietiempo.diesel <- xts(importacion.diesel$Diesel, order.by = importacion.dies
 serietiempo.diesel <- ts(serietiempo.diesel, start=c(2001,1), end=c(2016,12), frequency = 12)
 
 #######################
-4123660489
-4123310128
-4123320382
+### TOP 5 PRODUCTOS FALTANTES
+## 4123310128
+## 4123660214
+## 4123530132
+## 4123660107
+## 4123660489
 
-4123811184
-4123660211
-4123811146
 
 PagCentroamerica$Producto<-as.character(PagCentroamerica$Producto)
 
-hola<-PagCentroamerica[PagCentroamerica$Producto == "4123310128 ",]
+producto1Fal<-PagCentroamerica[PagCentroamerica$Producto == "4123310128 ",]
+producto2Fal<-PagCentroamerica[PagCentroamerica$Producto == "4123660214 ",]
+producto3Fal<-PagCentroamerica[PagCentroamerica$Producto == "4123530132 ",]
+producto4Fal<-PagCentroamerica[PagCentroamerica$Producto == "4123660107 ",]
+producto5Fal<-PagCentroamerica[PagCentroamerica$Producto == "4123660489 ",]
 
-View(hola)
-View(PagCentroamerica)
+## SERIE DE TIEMPO PARA CADA PRODUCTO
 
+########################################### PRODUCTO 1 ########################################### 
+# sumamos todas las ventas por anio
+# 2015
+View(producto1Fal)
+v201501<-sum(producto1Fal[which(producto1Fal[,1] == "201501"),11])
+v201502<-sum(producto1Fal[which(producto1Fal[,1] == "201502"),11])
+v201503<-sum(producto1Fal[which(producto1Fal[,1] == "201503"),11])
+v201504<-sum(producto1Fal[which(producto1Fal[,1] == "201504"),11])
+v201505<-sum(producto1Fal[which(producto1Fal[,1] == "201505"),11])
+v201506<-sum(producto1Fal[which(producto1Fal[,1] == "201506"),11])
+v201507<-sum(producto1Fal[which(producto1Fal[,1] == "201507"),11])
+v201508<-sum(producto1Fal[which(producto1Fal[,1] == "201508"),11])
+v201509<-sum(producto1Fal[which(producto1Fal[,1] == "201509"),11])
+v201510<-sum(producto1Fal[which(producto1Fal[,1] == "201510"),11])
+v201511<-sum(producto1Fal[which(producto1Fal[,1] == "201511"),11])
+v201512<-sum(producto1Fal[which(producto1Fal[,1] == "201512"),11])
+
+pro12015<-rbind(v201501, v201502, v201503, v201504,v201505, v201506, v201507, v201508, v201509, v201510, v201511, v201512)
+pro12015<-as.data.frame(pro12015)
+pro12015$Anio <- 2015
+pro12015$Mes<-mesesN
+View(pro12015)
+
+# 2016
+v201601<-sum(producto1Fal[which(producto1Fal[,1] == "201601"),11])
+v201602<-sum(producto1Fal[which(producto1Fal[,1] == "201602"),11])
+v201603<-sum(producto1Fal[which(producto1Fal[,1] == "201603"),11])
+v201604<-sum(producto1Fal[which(producto1Fal[,1] == "201604"),11])
+v201605<-sum(producto1Fal[which(producto1Fal[,1] == "201605"),11])
+v201606<-sum(producto1Fal[which(producto1Fal[,1] == "201606"),11])
+v201607<-sum(producto1Fal[which(producto1Fal[,1] == "201607"),11])
+v201608<-sum(producto1Fal[which(producto1Fal[,1] == "201608"),11])
+v201609<-sum(producto1Fal[which(producto1Fal[,1] == "201609"),11])
+v201610<-sum(producto1Fal[which(producto1Fal[,1] == "201610"),11])
+v201611<-sum(producto1Fal[which(producto1Fal[,1] == "201611"),11])
+v201612<-sum(producto1Fal[which(producto1Fal[,1] == "201612"),11])
+
+pro12016<-rbind(v201601, v201602, v201603, v201604,v201605, v201606, v201607, v201608, v201609, v201610, v201611, v201612)
+pro12016<-as.data.frame(pro12016)
+pro12016$Anio <- 2016
+pro12016$Mes<-mesesN
+View(pro12016)
+
+# 2017
+v201701<-sum(producto1Fal[which(producto1Fal[,1] == "201701"),11])
+v201702<-sum(producto1Fal[which(producto1Fal[,1] == "201702"),11])
+v201703<-sum(producto1Fal[which(producto1Fal[,1] == "201703"),11])
+v201704<-sum(producto1Fal[which(producto1Fal[,1] == "201704"),11])
+v201705<-sum(producto1Fal[which(producto1Fal[,1] == "201705"),11])
+v201706<-sum(producto1Fal[which(producto1Fal[,1] == "201706"),11])
+v201707<-sum(producto1Fal[which(producto1Fal[,1] == "201707"),11])
+v201708<-sum(producto1Fal[which(producto1Fal[,1] == "201708"),11])
+v201709<-sum(producto1Fal[which(producto1Fal[,1] == "201709"),11])
+v201710<-sum(producto1Fal[which(producto1Fal[,1] == "201710"),11])
+v201711<-sum(producto1Fal[which(producto1Fal[,1] == "201711"),11])
+v201712<-sum(producto1Fal[which(producto1Fal[,1] == "201712"),11])
+
+pro12017<-rbind(v201701, v201702, v201703, v201704,v201705, v201706, v201707, v201708, v201709, v201710, v201711, v201712)
+pro12017<-as.data.frame(pro12017)
+pro12017$Anio <- 2017
+pro12017$Mes<-mesesN
+View(pro12017)
+
+# 2018
+v201801<-sum(producto1Fal[which(producto1Fal[,1] == "201801"),11])
+v201802<-sum(producto1Fal[which(producto1Fal[,1] == "201802"),11])
+v201803<-sum(producto1Fal[which(producto1Fal[,1] == "201803"),11])
+v201804<-sum(producto1Fal[which(producto1Fal[,1] == "201804"),11])
+v201805<-sum(producto1Fal[which(producto1Fal[,1] == "201805"),11])
+v201806<-sum(producto1Fal[which(producto1Fal[,1] == "201806"),11])
+v201807<-sum(producto1Fal[which(producto1Fal[,1] == "201807"),11])
+v201808<-sum(producto1Fal[which(producto1Fal[,1] == "201808"),11])
+v201809<-sum(producto1Fal[which(producto1Fal[,1] == "201809"),11])
+v201810<-sum(producto1Fal[which(producto1Fal[,1] == "201810"),11])
+v201811<-sum(producto1Fal[which(producto1Fal[,1] == "201811"),11])
+v201812<-sum(producto1Fal[which(producto1Fal[,1] == "201812"),11])
+
+pro12018<-rbind(v201801, v201802, v201803, v201804,v201805, v201806, v201807, v201808, v201809, v201810, v201811, v201812)
+pro12018<-as.data.frame(pro12018)
+pro12018$Anio <- 2018
+pro12018$Mes<-mesesN
+View(pro12018)
+
+vector<-rbind(pro12015, pro12016, pro12017, pro12018)
+View(vector)
+
+# save a numeric vector containing 72 monthly observations
+# from Jan 2009 to Dec 2014 as a time series object
+myts <- ts(vector, start=c(2015, 1), end=c(2018, 12), frequency=12)
+
+start(myts)
+end(myts)
+frequency(myts)
+
+plot(myts, type="l", main = "Serie de Tiempo de  PRO 1")
+plot.ts(myts)
+
+decomP1<-decompose(myts)
+plot(decomP1)
+
+#Grafico sobre el comportamiento de la media en subsets de los anios
+plot(aggregate(myts,FUN=mean))
+View(myts)
+
+#descomponemos la serie de tiempo en tendencia, estacionaridad e innovacion
+decomposeUniVendidas<-decompose(myts)
+plot(decomposeUniVendidas$trend)
+plot(decomposeUniVendidas)
+plot(decomposeUniVendidas$seasonal)
+# timeseries
 
 
 
