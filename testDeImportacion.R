@@ -834,7 +834,7 @@ colnames(train_nn) <- c("precio_catalogo","precio_sin_iva","pronostico","uni_ven
 colnames(test_nn) <- c("precio_catalogo","precio_sin_iva","pronostico","uni_vendidas","venta_neta","costo","utilidad","margen","pedido_real","ratio","porcentaje","porcentaje_2","pais_numero","categoria_numero","canalventa_numero","paginacion_numero")
 
 nn_model <- neuralnet(pronostico ~., data = train_nn, hidden=c(4,3,2,1), linear.output=FALSE, threshold=0.01 )
-
+train_nn$results <- nn_model$response
 temp_test <- subset(test_nn, select = c("precio_catalogo","precio_sin_iva","uni_vendidas","venta_neta","costo","utilidad","margen","pedido_real","ratio","porcentaje","porcentaje_2","pais_numero","categoria_numero","canalventa_numero","paginacion_numero"))
 nn.results <- compute(nn_model, temp_test)
 results <- data.frame(actual = test_nn$Pronostico, prediction = nn.results$net.result)
