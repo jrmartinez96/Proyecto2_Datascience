@@ -9,6 +9,7 @@
 #install.packages("ggfortify")
 #install.packages("xts")
 #install.packages("neuralnet")
+install.packages("devtools")
 
 #Librerias
 library(forecast)
@@ -85,7 +86,7 @@ test_1 <- scaled_1[-train_ind_1, ]
 test_1 <- as.data.frame(test_1)
 
 nn_model_1 <- neuralnet(unidades_vendidas ~., data = train_1, hidden=c(3,2,1), linear.output=TRUE, threshold=0.01 )
-#plot(nn_model)
+plot(nn_model_1, arrow.length=0.13)
 
 
 predict_testNN_1 = compute(nn_model_1, test_1)
@@ -132,7 +133,7 @@ test_2 <- scaled_2[-train_ind_2, ]
 test_2 <- as.data.frame(test_2)
 
 nn_model_2 <- neuralnet(unidades_vendidas ~., data = train_2, hidden=c(3,2,1), linear.output=TRUE, threshold=0.01 )
-#plot(nn_model)
+plot(nn_model_2, arrow.length=0.13)
 
 
 predict_testNN_2 = compute(nn_model_2, test_2)
@@ -179,7 +180,7 @@ test_3 <- scaled_3[-train_ind_3, ]
 test_3 <- as.data.frame(test_3)
 
 nn_model_3 <- neuralnet(unidades_vendidas ~., data = train_3, hidden=c(3,2,1), linear.output=TRUE, threshold=0.01 )
-#plot(nn_model)
+plot(nn_model_3, arrow.length=0.13)
 
 
 predict_testNN_3 = compute(nn_model_3, test_3)
@@ -227,7 +228,7 @@ test_4 <- scaled_4[-train_ind_4, ]
 test_4 <- as.data.frame(test_4)
 
 nn_model_4 <- neuralnet(unidades_vendidas ~., data = train_4, hidden=c(3,2,1), linear.output=TRUE, threshold=0.01 )
-#plot(nn_model)
+plot(nn_model_4, arrow.length=0.13)
 
 
 predict_testNN_4 = compute(nn_model_4, test_4)
@@ -274,7 +275,7 @@ test_5 <- scaled_5[-train_ind_5, ]
 test_5 <- as.data.frame(test_5)
 
 nn_model_5 <- neuralnet(unidades_vendidas ~., data = train_5, hidden=c(3,2,1), linear.output=TRUE, threshold=0.01 )
-#plot(nn_model)
+plot(nn_model_5, arrow.length=0.13)
 
 
 predict_testNN_5 = compute(nn_model_5, test_5)
